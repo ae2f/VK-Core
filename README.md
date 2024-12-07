@@ -1,2 +1,4 @@
 # CL-Core
- OpenCL Interface Library for Writing OpenCL Kernel code.
+> Rel-v0.0.1
+
+OpenCL Interface Library for Writing OpenCL Kernel code.  
