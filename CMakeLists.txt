@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(CL-Core VERSION 1.0.2)
+project(CL-Core VERSION 1.1.2)
 enable_testing()
 if(NOT TARGET ${PROJECT_NAME})
 
@@ -20,10 +20,11 @@ add_library(
     "include/ae2fCL/Scenario.h"
 )
 
-set(ae2fCL_PyConfigPath "${PROJECT_SOURCE_DIR}/PyConfig.py")
+set(ae2fCL_Core_Dir ${PROJECT_SOURCE_DIR})
+set(ae2fCL_PyConfigPath "${ae2fCL_Core_Dir}/PyConfig.py")
 
 # clean
-file(REMOVE_RECURSE ${PROJECT_SOURCE_DIR}/pyinclude)
+file(REMOVE_RECURSE ${ae2fCL_Core_Dir}/pyinclude)
 
 # copies all files under wanted include path to /pyinclude
 # 
@@ -37,7 +38,7 @@ function(ae2fCL_AppendInclude prm_IncludeDir)
     foreach(tar IN LISTS INCLUDE_TAR)
         file(RELATIVE_PATH tar_rel "${prm_IncludeDir}" "${tar}")
         message(STATUS "We are configuring ${tar_rel}.")
-        configure_file("${prm_IncludeDir}/${tar_rel}" "${PROJECT_SOURCE_DIR}/pyinclude/${tar_rel}")
+        configure_file("${prm_IncludeDir}/${tar_rel}" "${ae2fCL_Core_Dir}/pyinclude/${tar_rel}")
     endforeach()
 
     unset (INCLUDE_TAR)
@@ -57,7 +58,6 @@ function(ae2fCL_AddConfProjTarDep prm_ProjName prm_SrcScanTar)
 endfunction()
 
 ae2fCL_AppendInclude(${PROJECT_SOURCE_DIR}/include)
-ae2fCL_AddConfProjTarDep(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/src)
 
 include_directories(include)
 
