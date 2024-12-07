@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(CL-Core VERSION 1.0.1)
+project(CL-Core VERSION 1.0.2)
 enable_testing()
 if(NOT TARGET ${PROJECT_NAME})
 
