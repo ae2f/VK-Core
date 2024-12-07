@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(CL-Core VERSION 1.1.2)
+project(CL-Core VERSION 1.2.2)
 enable_testing()
 if(NOT TARGET ${PROJECT_NAME})
 
@@ -10,9 +10,6 @@ include(GNUInstallDirs)
 add_subdirectory(mod/ae2f/Core)
 link_libraries(Core)
 
-find_package(OpenCL REQUIRED)
-link_libraries(OpenCL::OpenCL)
-
 add_library(
     ${PROJECT_NAME}
     INTERFACE
@@ -20,8 +17,9 @@ add_library(
     "include/ae2fCL/Scenario.h"
 )
 
-set(ae2fCL_Core_Dir ${PROJECT_SOURCE_DIR})
-set(ae2fCL_PyConfigPath "${ae2fCL_Core_Dir}/PyConfig.py")
+set(ae2fCL_Core_Dir "${PROJECT_SOURCE_DIR}" CACHE STRING "Do not touch it. It is a pre-defined source directory.")
+message("ae2fCL_Core_Dir: ${ae2fCL_Core_Dir}")
+set(ae2fCL_PyConfigPath "${ae2fCL_Core_Dir}/PyConfig.py" CACHE STRING "Do not touch it. It is a pre-defined path for config function (ae2fCL-Core)")
 
 # clean
 file(REMOVE_RECURSE ${ae2fCL_Core_Dir}/pyinclude)
@@ -53,8 +51,15 @@ endfunction()
 # prm_ProjName: Your project name
 # prm_SrcScanTar: The directory where your project's cl code exists. It must be absolute
 function(ae2fCL_AddConfProjTarDep prm_ProjName prm_SrcScanTar)
-    add_custom_target("${prm_ProjName}-ae2fCLConfig" COMMAND python3 ${ae2fCL_PyConfigPath} ${prm_SrcScanTar})
-    add_dependencies("${prm_ProjName}" "${prm_ProjName}-ae2fCLConfig")
+    if(NOT OpenCL_FOUND)
+        find_package(OpenCL REQUIRED)
+    endif()
+    if(NOT TARGET "${prm_ProjName}-ae2fCLConfig")
+        target_link_libraries(${prm_ProjName} OpenCL::OpenCL)
+
+        add_custom_target("${prm_ProjName}-ae2fCLConfig" COMMAND python3 ${ae2fCL_PyConfigPath} ${prm_SrcScanTar})
+        add_dependencies("${prm_ProjName}" "${prm_ProjName}-ae2fCLConfig")
+    endif()
 endfunction()
 
 ae2fCL_AppendInclude(${PROJECT_SOURCE_DIR}/include)

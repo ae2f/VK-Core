@@ -1,8 +1,8 @@
 import mod.ae2fPy.PreP.PreP as PreP
 import os
 import sys
+import pathlib
 
-print("Hello World! BmpCLConfig is running...")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GIVEN_PATH = HERE if len(sys.argv) != 2 else sys.argv[1]
@@ -10,17 +10,22 @@ GIVEN_PATH = HERE if len(sys.argv) != 2 else sys.argv[1]
 PRM_INCLUDE = [
     f"{HERE}/pyinclude/"
 ]
-import pathlib
+
+print("Hello World! BmpCLConfig is running...")
+print(f"Current Position: {HERE}")
+print(f"Given Path: {GIVEN_PATH}")
+
 
 # Preprocess 0: Get all source and throw it to ...cl
 for file in (f for f in pathlib.Path(f'{GIVEN_PATH}/').rglob('*.cl.c') if f.is_file()):
-    FPATH : str = file.absolute().__str__()
+    FPATH : str = str(file.absolute())
     CTT : list[str]
 
     with open(FPATH, 'r') as F:
         CTT = F.readlines()
 
-    SRC_RET = ["#define ae2fCL_Scenario\n"] + PreP.Include(CTT, file.parent.__str__(), PRM_INCLUDE)
+
+    SRC_RET = ["#define ae2fCL_Scenario\n"] + PreP.Include(CTT, str(file.parent.absolute()), PRM_INCLUDE)
 
     with open(FPATH[:len(FPATH) - 2], 'w') as F:
         F.writelines(SRC_RET)
