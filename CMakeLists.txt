@@ -52,13 +52,16 @@ endfunction()
 # prm_SrcScanTar: The directory where your project's cl code exists. It must be absolute
 function(ae2fCL_AddConfProjTarDep prm_ProjName prm_SrcScanTar)
     if(NOT OpenCL_FOUND)
+        message("I am finding OpenCL")
         find_package(OpenCL REQUIRED)
+        link_libraries(OpenCL::OpenCL)
     endif()
     if(NOT TARGET "${prm_ProjName}-ae2fCLConfig")
-        target_link_libraries(${prm_ProjName} OpenCL::OpenCL)
+        target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
 
-        add_custom_target("${prm_ProjName}-ae2fCLConfig" COMMAND python3 ${ae2fCL_PyConfigPath} ${prm_SrcScanTar})
+        add_custom_target("${prm_ProjName}-ae2fCLConfig" COMMAND python3 ${ae2fCL_PyConfigPath} ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR})
         add_dependencies("${prm_ProjName}" "${prm_ProjName}-ae2fCLConfig")
+        add_dependencies("${prm_ProjName}" OpenCL::OpenCL)
     endif()
 endfunction()
 
