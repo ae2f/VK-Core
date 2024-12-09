@@ -5,14 +5,16 @@ import subprocess
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-GIVEN_PATH = HERE if len(sys.argv) != 3 else sys.argv[1]
-GIVEN_CL_PATH = HERE if len(sys.argv) != 3 else sys.argv[2]
+GIVEN_PATH = HERE if len(sys.argv) != 4 else (sys.argv[1])
+GIVEN_CL_PATH = HERE if len(sys.argv) != 4 else (sys.argv[2])
+GIVEN_COMPILER = "gcc" if len(sys.argv) != 4 else (sys.argv[3])
 
 PRM_INCLUDE = f"{HERE}/pyinclude/"
 
 print("Hello World! BmpCLConfig is running...")
 print(f"Current Position: {HERE}")
 print(f"Given Path: {GIVEN_PATH}")
+print(f"Given Compiler: {GIVEN_COMPILER}")
 
 
 # Preprocess 0: Get all source and throw it to ...cl
@@ -37,7 +39,7 @@ for file in (f for f in pathlib.Path(f'{GIVEN_PATH}/').rglob('*.cl.c') if f.is_f
         F.close()
 
     result = subprocess.run([
-        'gcc', '-Wno-error', 
+        GIVEN_COMPILER, '-Wno-error', 
         '-E', '-P', 
         '-I' + PRM_INCLUDE, '-I' + GIVEN_CL_PATH, 
         OUT_NAME_TMP, '-o', OUT_NAME

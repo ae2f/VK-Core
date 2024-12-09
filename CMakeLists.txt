@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(CL-Core VERSION 2.2.3)
+project(CL-Core VERSION 2.2.4)
 enable_testing()
 if(NOT TARGET ${PROJECT_NAME})
 
@@ -59,7 +59,7 @@ function(ae2fCL_AddConfProjTarDep prm_ProjName prm_SrcScanTar)
     if(NOT TARGET "${prm_ProjName}-ae2fCLConfig")
         target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
 
-        add_custom_target("${prm_ProjName}-ae2fCLConfig" COMMAND python3 ${ae2fCL_PyConfigPath} ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR})
+        add_custom_target("${prm_ProjName}-ae2fCLConfig" COMMAND python3 ${ae2fCL_PyConfigPath} ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} ${CMAKE_C_COMPILER})
         add_dependencies("${prm_ProjName}" "${prm_ProjName}-ae2fCLConfig")
         add_dependencies("${prm_ProjName}" OpenCL::OpenCL)
     endif()
