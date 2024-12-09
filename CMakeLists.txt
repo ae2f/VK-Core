@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(CL-Core VERSION 2.3.4)
+project(CL-Core VERSION 2.4.4)
 enable_testing()
 if(NOT TARGET ${PROJECT_NAME})
 
@@ -15,27 +15,30 @@ file(REMOVE_RECURSE ${ae2fCL_Core_Dir}/pyinclude)
 # @brief 
 # Copies all files under wanted include path to /pyinclude
 # 
-# @param prm_IncludeDir 
+# @param ... 
 # Absolute path where the files will be collected.
 #
 # @warning
 # Notice that this must be absolute path
-function(ae2fCL_AppendInclude prm_IncludeDir)
+function(ae2fCL_AppendInclude)
     message(STATUS "ae2fCL_AppendInclude is activating.")
-    message(STATUS "Searching for ${prm_IncludeDir}...")
-    message(STATUS "")
-    file(GLOB_RECURSE INCLUDE_TAR "${prm_IncludeDir}/**")
-    
-    foreach(tar IN LISTS INCLUDE_TAR)
-        file(RELATIVE_PATH tar_rel "${prm_IncludeDir}" "${tar}")
-        message(STATUS "We are configuring ${tar_rel}.")
-        configure_file("${prm_IncludeDir}/${tar_rel}" "${ae2fCL_Core_Dir}/pyinclude/${tar_rel}")
+
+    foreach(prm_IncludeDir ${ARGN})
+        message(STATUS "Searching for ${prm_IncludeDir}...")
+        message(STATUS "")
+        file(GLOB_RECURSE INCLUDE_TAR "${prm_IncludeDir}/**")
+        
+        foreach(tar IN LISTS INCLUDE_TAR)
+            file(RELATIVE_PATH tar_rel "${prm_IncludeDir}" "${tar}")
+            message(STATUS "We are configuring ${tar_rel}.")
+            configure_file("${prm_IncludeDir}/${tar_rel}" "${ae2fCL_Core_Dir}/pyinclude/${tar_rel}")
+        endforeach()
+
+        unset (INCLUDE_TAR)
+        unset (tar_rel)
+        message(STATUS "")
     endforeach()
 
-    unset (INCLUDE_TAR)
-    unset (tar_rel)
-
-    message(STATUS "")
     message(STATUS "ae2fCL_AppendInclude is over.")
 endfunction()
 

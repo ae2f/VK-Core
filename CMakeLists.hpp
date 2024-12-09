@@ -6,12 +6,12 @@ namespace ____ae2f_Core_Def_CMAKE {
     /// @brief 
     /// Copies all files under wanted include path to /pyinclude
     ///
-    /// @param prm_IncludeDir 
+    /// @param ...
     /// Absolute path where the files will be collected.
     ///
     /// @warning
     /// Notice that this must be absolute path
-    constexpr void ae2fCL_AppendInclude(auto prm_IncludeDir);
+    constexpr void ae2fCL_AppendInclude(...);
 
     /// @brief 
     /// Make a configuration target for a ae2fCL Projects
