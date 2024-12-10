@@ -1,5 +1,3 @@
-include(../mod/ae2f/Core/cmake/Core.cmake)
-
 # @brief 
 # Copies all files under wanted include path to /pyinclude
 # 
@@ -8,7 +6,7 @@ include(../mod/ae2f/Core/cmake/Core.cmake)
 #
 # @warning
 # Notice that this must be absolute path
-function(ae2fCL_AppendInclude)
+function(ae2fCL_CoreAppendInclude)
     foreach(prm_IncludeDir ${ARGN})
         message(STATUS "Searching for ${prm_IncludeDir}...")
         message(STATUS "")
@@ -37,7 +35,7 @@ endfunction()
 #
 # @warning
 # Notice that this must be absolute.
-function(ae2fCL_AddConfProjTarDep prm_ProjName prm_SrcScanTar)
+function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
     if(NOT OpenCL_FOUND)
         message("I am finding OpenCL")
         find_package(OpenCL REQUIRED)
@@ -73,7 +71,7 @@ endfunction()
 # 
 # @param ...
 # The sources for the project.
-function(ae2fCL_LibTent prm_TarName prm_TarPreFix prm_includeDir)
-    ae2f_CoreLibProjTent(${prm_TarName} ${prm_TarPreFix} ${prm_includeDir})
-    ae2fCL_AppendInclude(${PROJECT_SOURCE_DIR}/${prm_includeDir})
+function(ae2fCL_CoreLibTent prm_TarName prm_TarPreFix prm_includeDir prm_namespace)
+    ae2f_CoreLibTent(${prm_TarName} ${prm_TarPreFix} ${prm_includeDir} ${prm_namespace})
+    ae2fCL_CoreAppendInclude(${PROJECT_SOURCE_DIR}/${prm_includeDir})
 endfunction()

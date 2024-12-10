@@ -1,7 +1,9 @@
-namespace ____ae2f_Core_Def_CMAKE {
+#include <Core.cmake.hpp>
+
+namespace ___DOC_CMAKE {
     /// @brief 
     /// Pre-defined CL-Core's Directory
-    constexpr const char* ae2fCL_Core_Dir;
+    CACHE STRING ae2fCL_Core_Dir;
 
     /// @brief 
     /// Copies all files under wanted include path to /pyinclude
@@ -11,7 +13,7 @@ namespace ____ae2f_Core_Def_CMAKE {
     ///
     /// @warning
     /// Notice that this must be absolute path
-    constexpr void ae2fCL_AppendInclude(...);
+    constexpr void ae2fCL_CoreAppendInclude(...);
 
     /// @brief 
     /// Make a configuration target for a ae2fCL Projects
@@ -24,7 +26,7 @@ namespace ____ae2f_Core_Def_CMAKE {
     ///
     /// @warning
     /// Notice that this must be absolute.
-    constexpr void ae2fCL_AddConfProjTarDep(auto prm_ProjName, auto prm_SrcScanTar);
+    constexpr void ae2fCL_CoreAddConfProjTarDep(auto prm_ProjName, auto prm_SrcScanTar);
 
     /// @brief
     /// Makes a Library installable. \n
@@ -39,7 +41,10 @@ namespace ____ae2f_Core_Def_CMAKE {
     /// @param prm_includeDir
     /// The include directory relative to the project CMakeLists.txt
     /// 
+    /// @param prm_namespace
+    /// Namespace for the target
+    /// 
     /// @param ...
     /// The sources for the project.
-    constexpr void ae2fCL_LibTent(auto prm_TarName, auto prm_TarPreFix, auto prm_includeDir);
+    constexpr void ae2fCL_CoreLibTent(auto prm_TarName, auto prm_TarPreFix, auto prm_includeDir, auto prm_namespace);
 }
