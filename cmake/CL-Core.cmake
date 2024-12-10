@@ -50,23 +50,3 @@ function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
         add_dependencies("${prm_ProjName}" OpenCL::OpenCL)
     endif()
 endfunction()
-
-# @brief
-# Makes a Library installable. \n
-# 
-# 
-# @param prm_TarName
-# Library name you want.
-# 
-# @param prm_TarPrefix
-# [STATIC | SHARED | INTERFACE]
-# 
-# @param prm_includeDir
-# The include directory relative to the project CMakeLists.txt
-# 
-# @param ...
-# The sources for the project.
-function(ae2fCL_CoreLibTent prm_TarName prm_TarPreFix prm_includeDir prm_namespace)
-    ae2f_CoreLibTent(${prm_TarName} ${prm_TarPreFix} ${prm_includeDir} ${prm_namespace})
-    ae2fCL_CoreAppendInclude(${PROJECT_SOURCE_DIR}/${prm_includeDir})
-endfunction()
