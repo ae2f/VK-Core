@@ -8,19 +8,15 @@
 # Notice that this must be absolute path
 function(ae2fCL_CoreAppendInclude)
     foreach(prm_IncludeDir ${ARGN})
-        message(STATUS "Searching for ${prm_IncludeDir}...")
-        message(STATUS "")
         file(GLOB_RECURSE INCLUDE_TAR "${prm_IncludeDir}/**")
         
         foreach(tar IN LISTS INCLUDE_TAR)
             file(RELATIVE_PATH tar_rel "${prm_IncludeDir}" "${tar}")
-            message(STATUS "We are configuring ${tar_rel}.")
             configure_file("${prm_IncludeDir}/${tar_rel}" "${ae2fCL_Core_Dir}/pyinclude/${tar_rel}")
         endforeach()
 
         unset (INCLUDE_TAR)
         unset (tar_rel)
-        message(STATUS "")
     endforeach()
 endfunction()
 
@@ -37,7 +33,6 @@ endfunction()
 # Notice that this must be absolute.
 function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
     if(NOT OpenCL_FOUND)
-        message("I am finding OpenCL")
         find_package(OpenCL REQUIRED)
         link_libraries(OpenCL::OpenCL)
     endif()
