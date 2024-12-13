@@ -59,6 +59,9 @@ typedef uchar uint8_t;
 #define _INC_MATH
 #define _INC_STDDEF
 #define _MATH_H_
+#define _INC_STDDEF_
+#define _STDINT
+#define _INC_CRTDEFS
 
 #endif
 
