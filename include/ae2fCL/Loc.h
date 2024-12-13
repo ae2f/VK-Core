@@ -27,7 +27,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
 #else
 typedef int int32_t;
 typedef uint uint32_t;
@@ -56,6 +55,10 @@ typedef uchar uint8_t;
 #define _ANSI_STDDEF_H
 #define __STDDEF_H__
 #define ae2f_Cmp_Fun_h
+#define _USE_MATH_DEFINES
+#define _INC_MATH
+#define _INC_STDDEF
+#define _MATH_H_
 
 #endif
 
