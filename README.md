@@ -1,5 +1,5 @@
 # ae2fCL::Core
-> Rel-v4.4.12
+> Rel-v4.4.13
 
 OpenCL Interface Library for Writing OpenCL Kernel code.  
 
@@ -9,4 +9,4 @@ OpenCL Interface Library for Writing OpenCL Kernel code.
 - make
 - ae2f::Core
 - OpenCL
-- python3
+- python
