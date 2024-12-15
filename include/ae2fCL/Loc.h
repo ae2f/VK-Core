@@ -37,6 +37,9 @@ typedef ushort uint16_t;
 typedef char int8_t;
 typedef uchar uint8_t;
 
+typedef long long int64_t;
+typedef unsigned long long uint64_t;
+
 /// @brief
 /// Shows when the code is running on CL code, not C.
 #define ae2fCL_whenCL(...) __VA_ARGS__

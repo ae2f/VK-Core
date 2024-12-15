@@ -40,7 +40,7 @@ function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
         target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
 
         add_custom_target(
-            "${prm_ProjName}-CLConfig" COMMAND python3 
+            "${prm_ProjName}-CLConfig" COMMAND python
             ${ae2fCL_Core_Dir}/PyConfig.py 
             ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
             ${CMAKE_C_COMPILER}

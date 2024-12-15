@@ -1,5 +1,5 @@
 # ae2fCL::Core
-> Rel-v4.4.11
+> Rel-v4.4.12
 
 OpenCL Interface Library for Writing OpenCL Kernel code.  
 
