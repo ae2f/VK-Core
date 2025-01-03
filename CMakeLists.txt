@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(CL-Core VERSION 4.6.13)
+project(CL-Core VERSION 4.7.13)
 enable_testing()
 
 if(NOT TARGET ${PROJECT_NAME})
     include(cmake/CL-Core.cmake)
 
-    ae2f_CoreLibFetch(ae2f Core Rel-v6.14.11)
+    ae2f_CoreLibFetch(ae2f Core Rel-v6.15.11)
 
     ae2f_CoreLibTent(
         ${PROJECT_NAME} INTERFACE
