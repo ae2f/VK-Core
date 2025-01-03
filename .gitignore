@@ -34,7 +34,5 @@
 .vscode/
 build/
 
-
-# PyConfig.py
-pyinclude/
+clinclude/
 src/

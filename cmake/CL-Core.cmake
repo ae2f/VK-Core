@@ -1,3 +1,5 @@
+include(cmake/Core.cmake)
+
 # @brief 
 # Copies all files under wanted include path to /pyinclude
 # 
@@ -41,7 +43,7 @@ function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
 
         add_custom_target(
             "${prm_ProjName}-CLConfig" COMMAND python
-            ${ae2fCL_Core_Dir}/PyConfig.py 
+            ${ae2f_ProjRoot}/cmake/CL-CoreConfig.py 
             ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
             ${CMAKE_C_COMPILER}
         )

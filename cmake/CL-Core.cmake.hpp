@@ -1,4 +1,4 @@
-#include <Core.cmake.hpp>
+#include "cmake.hpp"
 
 namespace ___DOC_CMAKE {
     /// @brief 
@@ -13,7 +13,7 @@ namespace ___DOC_CMAKE {
     ///
     /// @warning
     /// Notice that this must be absolute path
-    constexpr void ae2fCL_CoreAppendInclude(...);
+    function ae2fCL_CoreAppendInclude(...);
 
     /// @brief 
     /// Make a configuration target for a ae2fCL Projects
@@ -26,5 +26,8 @@ namespace ___DOC_CMAKE {
     ///
     /// @warning
     /// Notice that this must be absolute.
-    constexpr void ae2fCL_CoreAddConfProjTarDep(auto prm_ProjName, auto prm_SrcScanTar);
+    function ae2fCL_CoreAddConfProjTarDep(
+        param prm_ProjName, 
+        param prm_SrcScanTar
+    );
 }
