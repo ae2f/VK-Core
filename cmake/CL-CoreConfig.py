@@ -3,19 +3,17 @@ import sys
 import pathlib
 import subprocess
 
+GIVEN_PATH = (sys.argv[1])
+GIVEN_CL_PATH = (sys.argv[2])
+GIVEN_COMPILER = (sys.argv[3])
+HERE = (sys.argv[4])
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-GIVEN_PATH = HERE if len(sys.argv) != 4 else (sys.argv[1])
-GIVEN_CL_PATH = HERE if len(sys.argv) != 4 else (sys.argv[2])
-GIVEN_COMPILER = "gcc" if len(sys.argv) != 4 else (sys.argv[3])
-
-PRM_INCLUDE = f"{HERE}/../clinclude/"
+PRM_INCLUDE = f"{HERE}/clinclude/"
 
 print("Hello World! BmpCLConfig is running...")
 print(f"Current Position: {HERE}")
 print(f"Given Path: {GIVEN_PATH}")
 print(f"Given Compiler: {GIVEN_COMPILER}")
-
 
 # Preprocess 0: Get all source and throw it to ...cl
 for file in (f for f in pathlib.Path(f'{GIVEN_PATH}/').rglob('*.cl.c') if f.is_file()):
@@ -38,7 +36,7 @@ for file in (f for f in pathlib.Path(f'{GIVEN_PATH}/').rglob('*.cl.c') if f.is_f
         F.writelines(IN_CTN)
         F.close()
 
-    result = subprocess.run([
+    RESULT = subprocess.run([
         GIVEN_COMPILER, '-Wno-error', 
         '-E', '-P', 
         '-I' + PRM_INCLUDE, '-I' + GIVEN_CL_PATH, 
@@ -59,4 +57,4 @@ for file in (f for f in pathlib.Path(f'{GIVEN_PATH}/').rglob('*.cl.c') if f.is_f
                 )
         pass
     
-    print(result.stdout)
+    print(RESULT.stdout)

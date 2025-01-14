@@ -1,5 +1,7 @@
 include(cmake/Core.cmake)
 
+set(ae2fCL_CoreDir ${PROJECT_SOURCE_DIR} CACHE STRING "")
+
 if(NOT ae2f_clincludecleaned)
     set(ae2f_clincludecleaned ON CACHE STRING "")
     file(REMOVE_RECURSE ${ae2f_ProjRoot}/clinclude)
@@ -48,9 +50,10 @@ function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
 
         add_custom_target(
             "${prm_ProjName}-CLConfig" COMMAND python
-            ${ae2f_ProjRoot}/cmake/CL-CoreConfig.py 
+            ${ae2fCL_CoreDir}/cmake/CL-CoreConfig.py
             ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
             ${CMAKE_C_COMPILER}
+            ${ae2f_ProjRoot}
         )
 
         add_dependencies("${prm_ProjName}" "${prm_ProjName}-CLConfig")
