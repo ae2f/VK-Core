@@ -48,9 +48,17 @@ function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
     if(NOT TARGET "${prm_ProjName}-CLConfig")
         target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
 
+#        add_custom_target(
+#            "${prm_ProjName}-CLConfig" COMMAND python
+#            ${ae2fCL_CoreDir}/cmake/CL-CoreConfig.py
+#            ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
+#            ${CMAKE_C_COMPILER}
+#            ${ae2f_ProjRoot}
+#        )
+
         add_custom_target(
-            "${prm_ProjName}-CLConfig" COMMAND python
-            ${ae2fCL_CoreDir}/cmake/CL-CoreConfig.py
+            "${prm_ProjName}-CLConfig" COMMAND sh
+            ${ae2fCL_CoreDir}/cmake/CL-CoreConfig.sh
             ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
             ${CMAKE_C_COMPILER}
             ${ae2f_ProjRoot}
