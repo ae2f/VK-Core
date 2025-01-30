@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(CL-Core VERSION 4.10.14)
+project(CL-Core VERSION 4.11.14)
 enable_testing()
 
 if(NOT TARGET ${PROJECT_NAME})
     include(cmake/CL-Core.cmake)
 
-    ae2f_CoreLibFetch(ae2f Core Rel-v6.15.11)
+    ae2f_CoreLibFetch(ae2f Core Rel-v6.16.11)
 
     ae2f_CoreLibTent(
         ${PROJECT_NAME} INTERFACE
@@ -24,5 +24,4 @@ if(NOT TARGET ${PROJECT_NAME})
         find_package(OpenCL REQUIRED) 
         ae2f_CoreTestTent(${PROJECT_NAME} test OpenCL::OpenCL)
     endif()
-
 endif()
