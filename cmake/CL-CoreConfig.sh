@@ -14,7 +14,7 @@ echo "Given Compiler: $GIVEN_COMPILER"
 
 # Preprocess 0: Get all source and throw it to ...cl
 find "$GIVEN_PATH" -name '*.cl.c' | while read -r file; do
-    OUT_NAME="${file%.cl.c}"
+    OUT_NAME="${file%.cl.c}.cl"
     OUT_NAME_TMP="${OUT_NAME}.tmp.c"
     OUT_NAME_H="${OUT_NAME}h"
 
@@ -36,7 +36,10 @@ find "$GIVEN_PATH" -name '*.cl.c' | while read -r file; do
     # Write to the header file
     {
         while IFS= read -r line; do
-            echo "\"${line//\\/\\\\}\"" | sed 's/"/\\"/g' | sed 's/$/\\n"/'
+            modified_line="${line//\\/\\\\}"
+            modified_line="${modified_line//\"/\\\"}"
+
+            echo "\"${modified_line}\\n\""
         done < "$OUT_NAME"
     } > "$OUT_NAME_H"
 
