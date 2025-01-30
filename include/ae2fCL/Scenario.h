@@ -1,3 +1,5 @@
+/// @file Scenario.h
+
 #if !(defined(ae2fCL_Scenario_h) || defined(ae2fCL_Scenario))
 #define ae2fCL_Scenario_h
 
