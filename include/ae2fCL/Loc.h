@@ -15,7 +15,6 @@
 #include <ae2f/Cast.h>
 
 #ifndef ae2fCL_Scenario
-#pragma message ("You did not choose the scenario. Fetching the interface...")
 #include "Scenario.h"
 #endif
 
