@@ -8,6 +8,14 @@ if(NOT ae2f_clincludecleaned)
     file(REMOVE_RECURSE ${ae2f_ProjRoot}/clinclude)
 endif()
 
+# @brief
+# target_link_libraries for ae2fCL.
+function(ae2fCL_target_link_libraries)
+    if(ae2fCL_needed)
+        target_link_libraries(${ARGN})
+    endif()
+endfunction()
+
 # @brief 
 # Copies all files under wanted include path to /clinclude
 # 

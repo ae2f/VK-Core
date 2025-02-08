@@ -44,6 +44,10 @@ namespace ___DOC_CMAKE {
     );
 
     /// @brief
+    /// target_link_libraries for ae2fCL. 
+    function ae2fCL_target_link_libraries(...);
+
+    /// @brief
     /// Note they functions defined on CMake, not C/C++.
     /// 
     /// Will be disabled when @ref ae2fCL_needed is @ref OFF. \n
