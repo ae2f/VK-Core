@@ -8,6 +8,14 @@ if(NOT ae2f_clincludecleaned)
     file(REMOVE_RECURSE ${ae2f_ProjRoot}/clinclude)
 endif()
 
+# @brief
+# target_link_libraries for ae2fCL.
+function(ae2fCL_target_link_libraries)
+    if(ae2fCL_needed)
+        target_link_libraries(${ARGN})
+    endif()
+endfunction()
+
 # @brief 
 # Copies all files under wanted include path to /clinclude
 # 
@@ -107,7 +115,6 @@ function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
     if(ae2fCL_needed)
         if(NOT OpenCL_FOUND)
             find_package(OpenCL REQUIRED)
-            link_libraries(OpenCL::OpenCL)
         endif()
         if(NOT TARGET "${prm_ProjName}-CLConfig")
             target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
