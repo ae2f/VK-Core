@@ -1,0 +1,23 @@
+/**
+ * @file needed.h
+ * @author ae2f
+ * @brief 
+ * @version 0.1
+ * @date 2025-02-09
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ * Notice that this file is auto-generated.
+ * 
+ */
+
+#ifndef ae2fCL_needed_h
+#define ae2fCL_needed_h
+
+#include <ae2f/Call.h>
+
+/// @brief 
+/// Activates if @ref ___DOC_CMAKE::ae2fCL_needed is @ref ON.
+#define ae2fCL_needed @ae2fCL_needed@
+
+#endif 
