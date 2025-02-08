@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(CL-Core VERSION 4.12.14)
+project(CL-Core VERSION 4.13.14)
 enable_testing()
 
 if(NOT TARGET ${PROJECT_NAME})
@@ -8,7 +8,7 @@ if(NOT TARGET ${PROJECT_NAME})
 
     ae2f_CoreLibFetch(ae2f Core Rel-v6.18.11)
 
-    ae2f_CoreLibTent(
+    ae2fCL_CoreLibTent(
         ${PROJECT_NAME} INTERFACE
         include ae2fCL
         "include/ae2fCL/Loc.h"
@@ -22,6 +22,6 @@ if(NOT TARGET ${PROJECT_NAME})
 
     if(${ae2f_TEST})
         find_package(OpenCL REQUIRED) 
-        ae2f_CoreTestTent(${PROJECT_NAME} test OpenCL::OpenCL)
+        ae2fCL_CoreTestTent(${PROJECT_NAME} test OpenCL::OpenCL)
     endif()
 endif()
