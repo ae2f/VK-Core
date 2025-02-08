@@ -1,4 +1,13 @@
-/// @file Loc.h
+/**
+ * @file Loc.h
+ * @author ae2f
+ * @brief 
+ * @version 0.1
+ * @date 2025-02-09
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 
 #ifndef ae2fCL_Loc_h
 #define ae2fCL_Loc_h
@@ -11,7 +20,12 @@
 /// @brief opencl keyword
 #define __global
 
+#include "needed.h"
+
+#if ae2fCL_needed
 #include <CL/cl.h>
+#endif
+
 #include <ae2f/Cast.h>
 
 #ifndef ae2fCL_Scenario
