@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(CL-Core VERSION 4.14.17)
+project(CL-Core VERSION 4.14.18)
 enable_testing()
 
 set(OpenCL_FOUND OFF)
@@ -16,7 +16,6 @@ if(NOT TARGET ${PROJECT_NAME})
         include ae2fCL
         "include/ae2fCL/Loc.h"
         "include/ae2fCL/Scenario.h"
-        "include/ae2fCL/needed.h"
     )
 
     target_link_libraries(${PROJECT_NAME} INTERFACE Core)
