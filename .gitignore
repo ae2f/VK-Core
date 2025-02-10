@@ -12,3 +12,5 @@ Doxyfile
 html
 
 include/ae2fCL/needed.h
+
+submod
