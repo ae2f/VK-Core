@@ -17,7 +17,7 @@
 #include <ae2f/Call.h>
 
 /// @brief 
-/// Activates if @ref ___DOC_CMAKE::ae2fCL_needed is @ref ON.
-#define ae2fCL_needed @ae2fCL_needed@
+/// Activates if @ref ___DOC_CMAKE::ae2fCL_needed is @ref ON and OpenCL_FOUND is true.
+#define ae2fCL_needed @ae2fCL_needed@ && @__prm_opencl_good@
 
 #endif 

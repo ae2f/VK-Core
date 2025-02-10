@@ -16,6 +16,11 @@ namespace ___DOC_CMAKE {
     /// Is OpenCL needed.
     option ae2fCL_needed = ON;
 
+
+    /// @brief 
+    /// Check if opencl is found and you are desired to activate it. 
+    function ae2fCL_CheckNeeded();
+
     /// @brief
     /// Makes a Library installable.
     /// 
