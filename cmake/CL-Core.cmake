@@ -11,12 +11,7 @@ endif()
 # @brief
 # Check if opencl is found and you are desired to activate it. 
 function(ae2fCL_CheckNeeded)
-    if(OpenCL_FOUND)
-        set(__prm_opencl_good ON)
-    else()
-        set(__prm_opencl_good OFF)
-    endif()
-    configure_file(${ae2fCL_CoreDir}/hin/needed.h.in ${ae2fCL_CoreDir}/include/ae2fCL/needed.h)
+    message("ae2fCL_CheckNeeded is deprecated.")
 endfunction()
 
 # @brief

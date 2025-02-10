@@ -20,12 +20,6 @@
 /// @brief opencl keyword
 #define __global
 
-#include "needed.h"
-
-#if ae2fCL_needed
-#include <CL/cl.h>
-#endif
-
 #include <ae2f/Cast.h>
 
 #ifndef ae2fCL_Scenario
