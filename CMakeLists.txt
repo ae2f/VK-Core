@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(CL-Core VERSION 4.13.17)
+project(CL-Core VERSION 4.14.17)
 enable_testing()
+
+set(OpenCL_FOUND OFF)
 
 if(NOT TARGET ${PROJECT_NAME})
     include(cmake/CL-Core.cmake)
     ae2f_CoreLibFetch(ae2f Core Rel-v6.18.11)
-    configure_file(${PROJECT_SOURCE_DIR}/hin/needed.h.in ${PROJECT_SOURCE_DIR}/include/ae2fCL/needed.h)
+
+    ae2fCL_CheckNeeded()
 
     ae2f_CoreLibTent(
         ${PROJECT_NAME} INTERFACE
