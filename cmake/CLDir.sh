@@ -22,3 +22,4 @@ find "$GIVEN_PATH" -name '*.cl.c' | while read -r file; do
 done
 
 sh CLFile.sh ${GIVEN_PATH}/__PROCESSED.cl.c $GIVEN_CL_PATH $GIVEN_COMPILER $HERE
+rm ${GIVEN_PATH}/__PROCESSED.cl.c
