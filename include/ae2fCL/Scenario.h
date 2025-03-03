@@ -5,5 +5,7 @@
 
 #define get_global_id(i) 0
 #define get_global_size(i) 0
+#define get_local_id(i) 0
+#define get_local_size(i) 0
 
 #endif

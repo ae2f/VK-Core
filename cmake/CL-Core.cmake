@@ -106,6 +106,7 @@ function(ae2fCL_CoreTestTent prm_LibName prm_TestSourcesDir)
 endfunction()
 
 
+
 # @brief 
 # Make a configuration target for a ae2fCL Projects
 #
@@ -123,15 +124,21 @@ function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
             find_package(OpenCL REQUIRED)
         endif()
         if(NOT TARGET "${prm_ProjName}-CLConfig")
-            target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
+        	target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
 
-            add_custom_target(
-                "${prm_ProjName}-CLConfig" COMMAND sh
-                ${ae2fCL_CoreDir}/cmake/CL-CoreConfig.sh
-                ${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
-                ${CMAKE_C_COMPILER}
-                ${ae2f_ProjRoot}
-            )
+        	add_custom_target(
+                	"${prm_ProjName}-CLConfig" 
+
+			COMMAND 
+			sh
+			${ae2fCL_CoreDir}/cmake/CLDir.sh
+                	${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
+                	${CMAKE_C_COMPILER}
+                	${ae2f_ProjRoot}
+
+			WORKING_DIRECTORY 
+			${ae2fCL_CoreDir}/cmake
+		)
 
             add_dependencies("${prm_ProjName}" "${prm_ProjName}-CLConfig")
             add_dependencies("${prm_ProjName}" OpenCL::OpenCL)
