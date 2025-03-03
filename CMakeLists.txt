@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(CL-Core VERSION 4.15.18)
+project(CL-Core VERSION 4.15.21)
 enable_testing()
 
 set(OpenCL_FOUND OFF)
