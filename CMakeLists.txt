@@ -7,7 +7,7 @@ set(OpenCL_FOUND OFF)
 
 if(NOT TARGET ${PROJECT_NAME})
     include(cmake/CL-Core.cmake)
-    ae2f_CoreLibFetch(ae2f Core Rel-v6.19.11)
+    ae2f_CoreLibFetch(ae2f Core Rel-v6.19.12)
 
     ae2fCL_CheckNeeded()
 
