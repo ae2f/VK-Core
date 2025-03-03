@@ -17,7 +17,8 @@ rm ${GIVEN_PATH}/__PROCESSED.cl.c
 # Preprocess 0: Get all source and throw it to ...cl
 find "$GIVEN_PATH" -name '*.cl.c' | while read -r file; do
 	if [[ $file != "__PROCESSED.cl.c" ]]; then
-		cat $file >> ${GIVEN_PATH}/__PROCESSED.cl.c
+		cat $file >> $GIVEN_PATH/__PROCESSED.cl.c
+		echo "" >> $GIVEN_PATH/__PROCESSED.cl.c
 	fi
 done
 
