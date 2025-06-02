@@ -1,13 +1,13 @@
 #!/bin/bash
 
 GIVEN_PATH="$1"
-GIVEN_CL_PATH="$2"
+GIVEN_VK_PATH="$2"
 GIVEN_COMPILER="$3"
 HERE="$4"
 
-PRM_INCLUDE="$HERE/clinclude/"
+PRM_INVKUDE="$HERE/clinclude/"
 
-echo "Hello World! BmpCLConfig is running..."
+echo "Hello World! BmpVKConfig is running..."
 echo "Current Position: $HERE"
 echo "Given Path: $GIVEN_PATH"
 echo "Given Compiler: $GIVEN_COMPILER"
@@ -22,5 +22,5 @@ find "$GIVEN_PATH" -name '*.cl.c' | while read -r file; do
 	fi
 done
 
-sh CLFile.sh ${GIVEN_PATH}/__PROCESSED.cl.c $GIVEN_CL_PATH $GIVEN_COMPILER $HERE
+sh VKFile.sh ${GIVEN_PATH}/__PROCESSED.cl.c $GIVEN_VK_PATH $GIVEN_COMPILER $HERE
 rm ${GIVEN_PATH}/__PROCESSED.cl.c

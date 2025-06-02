@@ -1,11 +1,11 @@
 #!/bin/bash
 
 file="$1"
-GIVEN_CL_PATH="$2"
+GIVEN_VK_PATH="$2"
 GIVEN_COMPILER="$3"
 HERE="$4"
 
-PRM_INCLUDE="$HERE/clinclude/"
+PRM_INVKUDE="$HERE/clinclude/"
 
 OUT_NAME="${file%.cl.c}.cl"
 OUT_NAME_TMP="${OUT_NAME}.tmp.c"
@@ -16,12 +16,12 @@ IN_CTN=$(<"$file")
 
 # Write to the temporary file
 {
-    echo "#define ae2fCL_LocAsCL"
+    echo "#define ae2fVK_LocAsVK"
     echo "$IN_CTN"
 } > "$OUT_NAME_TMP"
 
 # Run the compiler
-$GIVEN_COMPILER -Wno-error -E -P -I"$PRM_INCLUDE" -I"$GIVEN_CL_PATH" "$OUT_NAME_TMP" -o "$OUT_NAME"
+$GIVEN_COMPILER -Wno-error -E -P -I"$PRM_INVKUDE" -I"$GIVEN_VK_PATH" "$OUT_NAME_TMP" -o "$OUT_NAME"
 
 # Remove the temporary file
 rm "$OUT_NAME_TMP"

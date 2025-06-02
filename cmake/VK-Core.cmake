@@ -1,23 +1,17 @@
 include(cmake/Core.cmake)
 
-option(ae2fCL_needed "Is OpenCL needed" ON)
-set(ae2fCL_CoreDir ${PROJECT_SOURCE_DIR} CACHE STRING "")
+option(ae2fVK_needed "Is Vulkan needed" ON)
+set(ae2fVK_CoreDir ${PROJECT_SOURCE_DIR} CACHE STRING "")
 
-if(NOT ae2f_clincludecleaned)
-    set(ae2f_clincludecleaned ON CACHE STRING "")
-    file(REMOVE_RECURSE ${ae2f_ProjRoot}/clinclude)
+if(NOT ae2f_vkincludecleaned)
+    set(ae2f_vkincludecleaned ON CACHE STRING "")
+    file(REMOVE_RECURSE ${ae2f_ProjRoot}/.vkinclude)
 endif()
 
 # @brief
-# Check if opencl is found and you are desired to activate it. 
-function(ae2fCL_CheckNeeded)
-    message("ae2fCL_CheckNeeded is deprecated.")
-endfunction()
-
-# @brief
-# target_link_libraries for ae2fCL.
-function(ae2fCL_target_link_libraries)
-    if(ae2fCL_needed)
+# target_link_libraries for ae2fVK.
+function(ae2fVK_target_link_libraries)
+    if(ae2fVK_needed)
         target_link_libraries(${ARGN})
     endif()
 endfunction()
@@ -30,23 +24,23 @@ endfunction()
 #
 # @warning
 # Notice that this must be absolute path
-function(ae2fCL_CoreAppendInclude)
+function(ae2fVK_CoreAppendInclude)
     foreach(prm_IncludeDir ${ARGN})
-        file(GLOB_RECURSE INCLUDE_TAR "${prm_IncludeDir}/**")
+        file(GLOB_RECURSE INVKUDE_TAR "${prm_IncludeDir}/**")
         
-        foreach(tar IN LISTS INCLUDE_TAR)
+        foreach(tar IN LISTS INVKUDE_TAR)
             file(RELATIVE_PATH tar_rel "${prm_IncludeDir}" "${tar}")
-            configure_file("${prm_IncludeDir}/${tar_rel}" "${ae2f_ProjRoot}/clinclude/${tar_rel}")
+            configure_file("${prm_IncludeDir}/${tar_rel}" "${ae2f_ProjRoot}/.vkinclude/${tar_rel}")
         endforeach()
 
-        unset (INCLUDE_TAR)
+        unset (INVKUDE_TAR)
         unset (tar_rel)
     endforeach()
 endfunction()
 
 # @brief
 # Makes a Library installable. \n
-# Will be disabled when @ref ae2fCL_needed is @ref OFF.
+# Will be disabled when @ref ae2fVK_needed is @ref OFF.
 # 
 # See @ref ae2f_CoreLibTent
 # @param prm_TarName
@@ -63,8 +57,8 @@ endfunction()
 # 
 # @param ...
 # The sources for the project.
-function(ae2fCL_CoreLibTent prm_TarName prm_TarPreFix prm_includeDir prm_namespace)
-    if(ae2fCL_needed)
+function(ae2fVK_CoreLibTent prm_TarName prm_TarPreFix prm_includeDir prm_namespace)
+    if(ae2fVK_needed)
         ae2f_CoreLibTent(
             ${prm_TarName} 
             ${prm_TarPreFix} 
@@ -78,7 +72,7 @@ endfunction()
 # @brief
 # Note they functions defined on CMake, not C/C++.
 # 
-# Will be disabled when @ref ae2fCL_needed is @ref OFF. \n
+# Will be disabled when @ref ae2fVK_needed is @ref OFF. \n
 # See @ref ae2f_CoreLibTent
 # @brief
 # Iterates a directory `prm_TestSourcesDir` and 
@@ -95,8 +89,8 @@ endfunction()
 # Additional Libraries if you want
 # 
 # @see ___DOC_CMAKE::ae2f_TEST
-function(ae2fCL_CoreTestTent prm_LibName prm_TestSourcesDir)
-    if(ae2fCL_needed)
+function(ae2fVK_CoreTestTent prm_LibName prm_TestSourcesDir)
+    if(ae2fVK_needed)
         ae2f_CoreTestTent(
             ${prm_LibName} 
             ${prm_TestSourcesDir} 
@@ -108,40 +102,40 @@ endfunction()
 
 
 # @brief 
-# Make a configuration target for a ae2fCL Projects
+# Make a configuration target for a ae2fVK Projects
 #
 # @param prm_ProjName 
 # Your project name
 #
 # @param prm_SrcScanTar 
-# The directory where your project's cl code exists.
+# The directory where your project's vulkan code exists.
 #
 # @warning
 # Notice that this must be absolute.
-function(ae2fCL_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
-    if(ae2fCL_needed)
-        if(NOT OpenCL_FOUND)
-            find_package(OpenCL REQUIRED)
+function(ae2fVK_CoreAddConfProjTarDep prm_ProjName prm_SrcScanTar)
+    if(ae2fVK_needed)
+        if(NOT Vulkan_FOUND)
+            find_package(Vulkan REQUIRED)
         endif()
-        if(NOT TARGET "${prm_ProjName}-CLConfig")
-        	target_link_libraries(${prm_ProjName} PUBLIC OpenCL::OpenCL)
+        if(NOT TARGET "${prm_ProjName}-VKConfig")
+        	target_link_libraries(${prm_ProjName} PUBLIC Vulkan::Vulkan)
 
         	add_custom_target(
-                	"${prm_ProjName}-CLConfig" 
+                	"${prm_ProjName}-VKConfig" 
 
 			COMMAND 
 			sh
-			${ae2fCL_CoreDir}/cmake/CLDir.sh
-                	${prm_SrcScanTar} ${OpenCL_INCLUDE_DIR} 
+			${ae2fVK_CoreDir}/cmake/VKDir.sh
+                	${prm_SrcScanTar} ${Vulkan_INCLUDE_DIR} 
                 	${CMAKE_C_COMPILER}
                 	${ae2f_ProjRoot}
 
 			WORKING_DIRECTORY 
-			${ae2fCL_CoreDir}/cmake
+			${ae2fVK_CoreDir}/cmake
 		)
 
-            add_dependencies("${prm_ProjName}" "${prm_ProjName}-CLConfig")
-            add_dependencies("${prm_ProjName}" OpenCL::OpenCL)
+            add_dependencies("${prm_ProjName}" "${prm_ProjName}-VKConfig")
+            add_dependencies("${prm_ProjName}" Vulkan::Vulkan)
         endif()
     endif()
 endfunction()

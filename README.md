@@ -1,7 +1,7 @@
-# ae2f::CL-Core
+# ae2f::VK-Core
 > Rel-v4.15.21
 
-OpenCL Interface Library for Writing OpenCL Kernel code.  
+OpenVK Interface Library for Writing OpenVK Kernel code.  
 
 # See Also
 - ae2f::Core-Template

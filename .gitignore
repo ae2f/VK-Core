@@ -11,6 +11,8 @@ clinclude/*
 Doxyfile
 html
 
-include/ae2fCL/needed.h
+include/ae2fVK/needed.h
 
 submod
+.*/
+*.auto.*
