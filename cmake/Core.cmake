@@ -82,10 +82,10 @@ function(ae2f_CoreLibTent prm_TarName prm_TarPreFix prm_includeDir prm_namespace
     install(TARGETS "${prm_TarName}"
         EXPORT ${prm_TarName}Targets
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        INVKUDES DESTINATION ${CMAKE_INSTALL_INVKUDEDIR})
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
         
     install(DIRECTORY ${prm_includeDir}/${prm_namespace}
-        DESTINATION ${CMAKE_INSTALL_INVKUDEDIR}/${prm_namespace}
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${prm_namespace}
     )
 
     # Package

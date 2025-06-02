@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(VK-Core VERSION 5.15.21)
+project(VK-Core VERSION 5.15.22)
 enable_testing()
 
 set(Vulkan_FOUND OFF)
