@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(VK-Core VERSION 0.0.0)
+project(VK-Core VERSION 5.15.21)
 enable_testing()
 
 set(Vulkan_FOUND OFF)
@@ -13,7 +13,6 @@ if(NOT TARGET ${PROJECT_NAME})
         ${PROJECT_NAME} INTERFACE
         include ae2fVK
         "include/ae2fVK/Loc.h"
-        "include/ae2fVK/Scenario.h"
     )
 
     target_link_libraries(${PROJECT_NAME} INTERFACE Core)
