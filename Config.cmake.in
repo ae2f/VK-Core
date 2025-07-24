@@ -10,3 +10,6 @@ link_libraries(ae2f::Core)
 
 find_dependency(Vulkan REQUIRED)
 link_libraries(Vulkan::Vulkan)
+
+find_dependency(glslang REQUIRED)
+link_libraries(glslang::glslang)
