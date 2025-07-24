@@ -1,6 +1,6 @@
 option(ae2fVK_needed	"Is Vulkan needed"	ON)
 option(ae2f_MAC_BUILD	"" OFF)
-option(ae2f_DEVEL	"" ON)
+option(ae2f_DEVEL	"" OFF)
 
 cmake_minimum_required(VERSION 3.10)
 

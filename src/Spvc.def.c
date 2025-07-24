@@ -22,14 +22,13 @@ ae2f_structdef(struct, ae2fVK_Spvc) {
 
 ae2f_extern ae2f_SHAREDCALL void ae2fVK_SpvcMk(
 		ae2f_err_t* restrict		reterr
-		, ae2fVK_Spvc* restrict const	ret
+		, ae2f_FREE(ae2fVK_SpvcDel, __ae2fVK_SpvcDel)
+		ae2fVK_Spvc* restrict const	ret
 		, const glslang_input_t* const	restrict inp
-		, const glslang_stage_t		stage
 		);
 
 ae2f_extern ae2f_SHAREDCALL void ae2fVK_SpvcDel(
-		ae2f_err_t* restrict		reterr
-		, ae2fVK_Spvc* restrict const	block
+		ae2fVK_Spvc* restrict const	block
 		);
 
 #else
@@ -55,7 +54,6 @@ ae2f_MAC() _ae2fVK_SpvcMk_imp(
 		int				v_ret_isgood
 		, ae2fVK_Spvc			v_ret
 		, const glslang_input_t* const	restrict inp
-		, const glslang_stage_t		stage
 		)
 {
 	do {
@@ -87,7 +85,7 @@ ae2f_MAC() _ae2fVK_SpvcMk_imp(
 
 		(v_ret_isgood) = glslang_program_link(
 				(v_ret).m_programme
-				, stage
+				, (inp)->stage
 				);
 
 		(v_ret_isgood) = glslang_shader_parse((v_ret).m_shader, inp);
@@ -96,7 +94,7 @@ ae2f_MAC() _ae2fVK_SpvcMk_imp(
 			break;
 		}
 
-		glslang_program_SPIRV_generate((v_ret).m_programme, stage);
+		glslang_program_SPIRV_generate((v_ret).m_programme, (inp)->stage);
 		(v_ret).m_spirv_words = glslang_program_SPIRV_get_ptr((v_ret).m_programme);
 		(v_ret).m_spirv_sz = glslang_program_SPIRV_get_size((v_ret).m_programme);
 
@@ -109,7 +107,6 @@ ae2f_MAC() _ae2fVK_SpvcMk(
 		ae2f_err_t* restrict		reterr
 		, ae2fVK_Spvc* restrict const	ret
 		, const glslang_input_t* const	restrict inp
-		, const glslang_stage_t		stage
 		)
 {
 	assert(ret);
@@ -119,7 +116,7 @@ ae2f_MAC() _ae2fVK_SpvcMk(
 		(reterr) && (*(reterr) |= ae2f_errGlob_PTR_IS_NULL);
 	} else {
 		int v_isgood;
-		__ae2fVK_SpvcMk_imp(v_isgood, *(ret), inp, stage);
+		__ae2fVK_SpvcMk_imp(v_isgood, *(ret), inp);
 		assert(v_isgood);
 		v_isgood || (*(reterr) |= ae2f_errGlob_ALLOC_FAILED);
 	}
@@ -135,22 +132,13 @@ ae2f_MAC() _ae2fVK_SpvcDel_imp(ae2fVK_Spvc v_block) {
 
 }
 
-ae2f_MAC() _ae2fVK_SpvcDel(
-		ae2f_err_t* restrict		reterr
-		, ae2fVK_Spvc* restrict const	block
-		) {
-	assert(block);
-
-	if((reterr) && *(reterr));
-	else unless(block) {
-		(reterr) && (*(reterr) |= ae2f_errGlob_PTR_IS_NULL);
-	} else {
-		__ae2fVK_SpvcDel_imp(*(block));
-		(block)->m_programme = 0;
-		(block)->m_shader = 0;
-		(block)->m_spirv_words = 0;
-		(block)->m_spirv_sz = 0;
-	}
+ae2f_MAC() _ae2fVK_SpvcDel(ae2fVK_Spvc* restrict const block) 
+{
+	__ae2fVK_SpvcDel_imp(*(block));
+	(block)->m_programme = 0;
+	(block)->m_shader = 0;
+	(block)->m_spirv_words = 0;
+	(block)->m_spirv_sz = 0;
 }
 
 #define __ae2fVK_SpvcDel_C __ae2fVK_SpvcDel
