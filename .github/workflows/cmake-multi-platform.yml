@@ -59,10 +59,7 @@ jobs:
       uses: egor-tensin/setup-clang@v1
 
     - name: Install Vulkan SDK
-      uses: humbletim/install-vulkan-sdk@v1.2
-
-    - name: Setup Vulkan SDK
-      uses: humbletim/setup-vulkan-sdk@v1.2.1
+      uses: edvn0/setup-vulkan-sdk@v1.3.0
       
     - name: Test
       run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }}
