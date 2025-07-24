@@ -58,10 +58,10 @@ jobs:
       if: matrix.c == '-DCMAKE_C_COMPILER=clang' && matrix.os == 'windows-11-arm' || matrix.os == 'windows-latest'
       uses: egor-tensin/setup-clang@v1
 
-    - name: Setup Vulkan SDK
+    - name: Install Vulkan SDK
       # You may pin to the exact commit or the version.
       # uses: humbletim/setup-vulkan-sdk@c25f41106918cde0bf347e6f201277392b3a9e9d
-      uses: humbletim/setup-vulkan-sdk@v1.2.1
+      uses: humbletim/install-vulkan-sdk@v1.2
       
     - name: Test
       run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }}
