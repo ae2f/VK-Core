@@ -41,6 +41,7 @@ if(NOT TARGET ae2fVK::Core)
 		set(ae2fVK-Core-defcc "")
 	endif()
 
+	file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/inc/ae2fVK)
 	ae2f_Macro_Lib_V(
 		ae2fVK Core ${ae2f_LIBPREFIX}
 		${PROJECT_SOURCE_DIR}/src "*.imp.c"
