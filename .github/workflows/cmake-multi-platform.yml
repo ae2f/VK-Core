@@ -59,6 +59,9 @@ jobs:
       uses: egor-tensin/setup-clang@v1
 
     - name: Install Vulkan SDK
+      uses: humbletim/install-vulkan-sdk@v1.2
+
+    - name: Setup Vulkan SDK
       uses: humbletim/setup-vulkan-sdk@v1.2.1
       
     - name: Test
