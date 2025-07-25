@@ -17,7 +17,7 @@ jobs:
         include:
           - os: ubuntu-latest
             bash: bash
-            make: MinGW
+            make: Unix
 
           - os: windows-latest
             bash: bash
