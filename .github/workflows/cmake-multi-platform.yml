@@ -17,23 +17,23 @@ jobs:
         include:
           - os: ubuntu-latest
             bash: bash
-            make: -G"Unix Makefiles"
+            make: MinGW
 
           - os: windows-latest
             bash: bash
-            make: -G"MinGW Makefiles"
+            make: MinGW
 
           - os: macos-latest
             bash: bash
-            make: -G"Unix Makefiles"
+            make: Unix
             
           - os: ubuntu-24.04-arm
             bash: bash
-            make: -G"Unix Makefiles"
+            make: Unix
 
           - os: windows-11-arm
             bash: bash
-            make: -G"MinGW Makefiles"
+            make: MinGW
 
           - c: -DCMAKE_C_COMPILER=gcc
             cc: -DCMAKE_CXX_COMPILER=g++

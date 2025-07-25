@@ -24,10 +24,11 @@ builddir=build/B$buildtype$stdc$stdcc$makers$_ae2f_CXX$_ae2f_IS_SHARED
 cmake -S . -B $builddir \
     -DCMAKE_C_STANDARD=$stdc \
     -DCMAKE_CXX_STANDARD=$stdcc \
-    $1 $2 $4 \
+    $1 $2 \
     -DCMAKE_MAKE_PROGRAM=make \
     -Dae2f_CXX=$_ae2f_CXX \
-    -Dae2f_IS_SHARED=$_ae2f_IS_SHARED || { echo "Configuration failed"; exit 1; }
+    -Dae2f_IS_SHARED=$_ae2f_IS_SHARED || { echo "Configuration failed"; exit 1; } \
+    -G\"$generator Makefiles\"
 
 cmake --build $builddir --config $buildtype || { echo "Build failed"; exit 1; }
 ctest --test-dir $builddir -C $buildtype --output-on-failure || { echo "Test failed"; exit 1; }
