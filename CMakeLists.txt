@@ -54,7 +54,7 @@ if(NOT TARGET ae2fVK::Core)
 
 	file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/inc/ae2fVK)
 	ae2f_Macro_Lib_V(
-		ae2fVK Core ${ae2f_LIBPREFIX}
+		ae2fVK VK-Core ${ae2f_LIBPREFIX}
 		${PROJECT_SOURCE_DIR}/src "*.imp.c"
 		${PROJECT_SOURCE_DIR}/src "*.def.c*"
 		${PROJECT_SOURCE_DIR}/inc/ae2fVK ".h"
@@ -62,17 +62,20 @@ if(NOT TARGET ae2fVK::Core)
 		inc ${ae2fVK-Core-defcc}
 	)
 
-	ae2f_titil(${ae2fVK__Core__TENT} ae2f::Core)
-	ae2f_titil(${ae2fVK__Core__TENT} ae2f::Preproc)
+ 	add_library(ae2fVK::Core ALIAS ${ae2f__VK-Core__TENT})
+ 	add_library(ae2f::VK-Core ALIAS ${ae2f__VK-Core__TENT})
+
+	ae2f_titil(${ae2fVK__VK-Core__TENT} ae2f::Core)
+	ae2f_titil(${ae2fVK__VK-Core__TENT} ae2f::Preproc)
 
 	if(ae2fVK_needed)
-		ae2f_titil(${ae2fVK__Core__TENT} Vulkan::Vulkan)
-		ae2f_titil(${ae2fVK__Core__TENT} ${ae2f-glslang})
-		ae2f_titil(${ae2fVK__Core__TENT} glslang::glslang-default-resource-limits)
+		ae2f_titil(${ae2fVK__VK-Core__TENT} Vulkan::Vulkan)
+		ae2f_titil(${ae2fVK__VK-Core__TENT} ${ae2f-glslang})
+		ae2f_titil(${ae2fVK__VK-Core__TENT} glslang::glslang-default-resource-limits)
 	endif()
 
 	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)
-	add_dependencies(${ae2fVK__Core__TENT} glslang::glslang)
+	add_dependencies(${ae2fVK__VK-Core__TENT} glslang::glslang)
 
 	if(ae2f_TEST)
 		find_package(Vulkan REQUIRED)
