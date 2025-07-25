@@ -8,8 +8,8 @@
 #include <ae2f/Cast.h>
 #include <ae2f/errGlob.h>
 
-#include <stdint.h>
 #include <ae2f/Macro.h>
+#include <stddef.h>
 
 ae2f_structdef(struct, ae2fVK_Spvc) {
 	glslang_shader_t*	restrict m_shader;
@@ -43,12 +43,16 @@ ae2f_extern ae2f_SHAREDCALL void ae2fVK_SpvcDel(
 #ifndef ae2fVK_Spvc_c
 
 #if !__ae2f_MACRO_GENERATED
+
+#if !ae2f_MAC_BUILD
+#include <assert.h>
 #include <ae2fVK/Spvc.h>
+#include <ae2f/Macro.h>
+#endif
+
 #endif
 #define ae2fVK_Spvc_c
 
-#include <ae2f/Macro.h>
-#include <assert.h>
 
 ae2f_MAC() _ae2fVK_SpvcMk_imp(
 		int				v_ret_isgood
@@ -132,7 +136,7 @@ ae2f_MAC() _ae2fVK_SpvcDel_imp(ae2fVK_Spvc v_block) {
 
 }
 
-ae2f_MAC() _ae2fVK_SpvcDel(ae2fVK_Spvc* restrict const block) 
+ae2f_MAC() _ae2fVK_SpvcDel(ae2fVK_Spvc* restrict const block)
 {
 	__ae2fVK_SpvcDel_imp(*(block));
 	(block)->m_programme = 0;

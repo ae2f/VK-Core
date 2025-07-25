@@ -1,5 +1,6 @@
 #include "ae2f/Call.h"
 #include <ae2fVK/Spvc.h>
+#include <assert.h>
 
 #if !ae2f_MAC_BUILD
 #error "This is not possible."

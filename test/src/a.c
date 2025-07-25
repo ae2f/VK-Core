@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <assert.h>
+
 #include <ae2fVK/Spvc.h>
 
 glslang_input_t input = {
@@ -22,11 +24,14 @@ int main() {
 	glslang_stage_t stage = GLSLANG_STAGE_COMPUTE;
 	input.resource = glslang_default_resource();
 	ae2fVK_Spvc spvc;
+	ae2f_err_t err[1];
 
 	ae2fVK_SpvcMk(
-			ae2f_static_cast(volatile ae2f_err_t* restrict, 0)
+			err
 			, &spvc, &input
 			);
+
+	assert(err[0]);
 
 	printf(
 			"SayLen: %lu\n"
