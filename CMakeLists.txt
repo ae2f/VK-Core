@@ -27,6 +27,18 @@ if(ae2fVK_needed)
 		message("[glslang] not found.")
 		option(ALLOW_EXTERNAL_SPIRV_TOOLS	"" ON)
 		option(GLSLANG_ENABLE_INSTALL		"" ON)
+
+		execute_process(
+			COMMAND git clone https://github.com/KhronosGroup/SPIRV-Tools 
+			${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools
+		)
+
+		execute_process(
+			COMMAND git clone https://github.com/KhronosGroup/SPIRV-Headers
+			${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools/external/spirv-headers
+		)
+
+		set(SPIRV-Tools-opt_DIR ${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools)
 		ae2f_CoreLibFetch_NS(KhronosGroup glslang glslang main)
 	endif()
 endif()
