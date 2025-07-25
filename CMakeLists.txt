@@ -26,7 +26,7 @@ include(cmake/VK-Core.cmake)
 
 if(ae2fVK_needed)
 	find_package(Vulkan REQUIRED)
-	# find_package(glslang)
+	find_package(glslang)
 
 	if(glslang_FOUND)
 		add_library(ae2f-glslang glslang::glslang)
