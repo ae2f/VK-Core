@@ -50,6 +50,10 @@ jobs:
       shell: bash
       run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
       
+    - name: Use GCC
+      if: matrix.c = '-DCMAKE_C_COMPILER=gcc'
+      uses: Matt-DESTROYER/Use-GCC@v1.2
+      
     - name: setupninja-win
       if: matrix.os == 'windows-11-arm'
       uses: seanmiddleditch/gha-setup-ninja@v6
