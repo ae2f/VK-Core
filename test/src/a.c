@@ -24,7 +24,7 @@ int main() {
 	glslang_stage_t stage = GLSLANG_STAGE_COMPUTE;
 	input.resource = glslang_default_resource();
 	ae2fVK_Spvc spvc;
-	ae2f_err_t err[1];
+	ae2f_err_t err[1] = {0};
 
 	ae2fVK_SpvcMk(
 			err
