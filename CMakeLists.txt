@@ -30,20 +30,6 @@ if(ae2fVK_needed)
 
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
-
-		if(OFF)
-			execute_process(
-				COMMAND git clone https://github.com/KhronosGroup/SPIRV-Tools 
-				${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools
-			)
-
-			execute_process(
-				COMMAND git clone https://github.com/KhronosGroup/SPIRV-Headers
-				${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools/external/spirv-headers
-			)
-
-			set(SPIRV-Tools-opt_DIR ${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools)
-		endif()
 		ae2f_CoreLibFetch_NS(KhronosGroup glslang glslang main)
 	endif()
 endif()
@@ -77,7 +63,8 @@ if(NOT TARGET ae2fVK::Core)
 		ae2f_titil(${ae2fVK__Core__TENT} glslang::glslang-default-resource-limits)
 	endif()
 
-	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/include)
+	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)
+	add_dependencies(${ae2fVK__Core__TENT} glslang::glslang)
 
 	if(ae2f_TEST)
 		find_package(Vulkan REQUIRED)
