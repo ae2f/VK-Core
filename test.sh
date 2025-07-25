@@ -12,7 +12,7 @@ __ae2f_CXX=("ON" "OFF")
 __ae2f_IS_SHARED=("ON" "OFF")
 
 buildtype=$3
-generator="\"-G$4\ Makefiles\""
+generator="-G \"$4 Makefiles\""
 
 echo "Generator: $generator"
 
