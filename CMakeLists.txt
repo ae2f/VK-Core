@@ -33,12 +33,7 @@ if(ae2fVK_needed)
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup glslang glslang main)
-
-		if(WIN32 AND ae2f_IS_SHARED)
-			set(ae2f-glslang glslang)
-		else()
-			set(ae2f-glslang glslang::glslang)
-		endif()
+  		set(ae2f-glslang glslang)
 	endif()
 endif()
 
