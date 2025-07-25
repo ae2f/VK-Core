@@ -31,7 +31,7 @@ int main() {
 			, &spvc, &input
 			);
 
-	assert(err[0]);
+	assert(!err[0]);
 
 	printf(
 			"SayLen: %lu\n"
