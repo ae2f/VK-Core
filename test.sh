@@ -3,8 +3,7 @@
 # $4     stdc
 # $5     stdcc
 
-# makers=("")
-# buildtypes=("Release" "Debug" "MinSizeRel" "RelWithDebInfo")
+makers=("-GNinja" "")
 lstdc=("90" "99" "11" "17" "23")
 lstdcc=("17" "20" "23")
 
@@ -20,21 +19,26 @@ for stdc in ${lstdc[@]}; do
 for stdcc in ${lstdcc[@]}; do
 for _ae2f_CXX in ${__ae2f_CXX[@]}; do
 for _ae2f_IS_SHARED in ${__ae2f_IS_SHARED[@]}; do
+for _maker in ${makders[@]}; do
 
-builddir=build/B$buildtype$stdc$stdcc$_ae2f_CXX$_ae2f_IS_SHARED
+builddir=build/B$buildtype$_maker$stdc$stdcc$_ae2f_CXX$_ae2f_IS_SHARED
 
 cmake -S . -B $builddir \
     -DCMAKE_C_STANDARD=$stdc \
     -DCMAKE_CXX_STANDARD=$stdcc \
     $1 $2 \
-    -DCMAKE_MAKE_PROGRAM=make \
     -Dae2f_CXX=$_ae2f_CXX \
     -Dae2f_IS_SHARED=$_ae2f_IS_SHARED  \
-    -G "$generator Makefiles" || { echo "Configuration failed"; exit 1; }
+    $_maker \
+    || { echo "Configuration failed"; exit 1; }
+
+
+#-G "$generator Makefiles" 
 
 cmake --build $builddir --config $buildtype || { echo "Build failed"; exit 1; }
 ctest --test-dir $builddir -C $buildtype --output-on-failure || { echo "Test failed"; exit 1; }
 
+done
 done
 done
 done
