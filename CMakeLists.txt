@@ -4,6 +4,11 @@ option(ae2f_DEVEL	"" OFF)
 
 cmake_minimum_required(VERSION 3.10)
 
+if(ae2f_IS_SHARED)
+	message("It is shared libraries.")
+	option(BUILD_SHARED_LIBS "" ON)
+endif()
+
 project(VK-Core VERSION 5.15.22)
 enable_testing()
 
@@ -29,11 +34,6 @@ if(ae2fVK_needed)
 		message("[glslang] not found.")
 		option(ALLOW_EXTERNAL_SPIRV_TOOLS	"" ON)
 		option(GLSLANG_ENABLE_INSTALL		"" ON)
-
-  		if(ae2f_IS_SHARED)
-    			message("It is shared libraries.")
-    			option(BUILD_SHARED_LIBS "" ON)
-    		endif()
 
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
