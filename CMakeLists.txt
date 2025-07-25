@@ -29,7 +29,7 @@ if(ae2fVK_needed)
 	find_package(glslang)
 
 	if(glslang_FOUND)
-		add_library(ae2f-glslang glslang::glslang)
+		set(ae2f-glslang glslang::glslang)
 	else()
 		message("[glslang] not found.")
 		option(ALLOW_EXTERNAL_SPIRV_TOOLS	"" ON)
@@ -62,8 +62,8 @@ if(NOT TARGET ae2fVK::Core)
 		inc ${ae2fVK-Core-defcc}
 	)
 
- 	add_library(ae2fVK::Core ALIAS ${ae2f__VK-Core__TENT})
- 	add_library(ae2f::VK-Core ALIAS ${ae2f__VK-Core__TENT})
+ 	add_library(ae2fVK::Core ALIAS ${ae2fVK__VK-Core__TENT})
+ 	add_library(ae2f::VK-Core ALIAS ${ae2fVK__VK-Core__TENT})
 
 	ae2f_titil(${ae2fVK__VK-Core__TENT} ae2f::Core)
 	ae2f_titil(${ae2fVK__VK-Core__TENT} ae2f::Preproc)
@@ -86,6 +86,6 @@ if(NOT TARGET ae2fVK::Core)
 				${PROJECT_SOURCE_DIR}/test/compute.auto.glsl.h
 			)
 		endif()
-		ae2f_CoreTestTent(${ae2fVK__Core__TENT} test/src)
+		ae2f_CoreTestTent(${ae2fVK__VK-Core__TENT} test/src)
 	endif()
 endif()
