@@ -35,7 +35,7 @@ if(ae2fVK_needed)
 		ae2f_CoreLibFetch_NS(KhronosGroup glslang glslang main)
 
 		if(WIN32 AND ae2f_IS_SHARED)
-			add_library(ae2f::glslang ALIAS glslangd)
+			add_library(ae2f::glslang ALIAS glslang)
 		else()
 			add_library(ae2f::glslang ALIAS glslang::glslang)
 		endif()
