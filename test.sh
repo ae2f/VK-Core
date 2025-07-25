@@ -29,7 +29,7 @@ cmake -S . -B $builddir \
     -Dae2f_IS_SHARED=$_ae2f_IS_SHARED || { echo "Configuration failed"; exit 1; }
 
 cmake --build $builddir --config $buildtype || { echo "Build failed"; exit 1; }
-ctest --test-dir $builddir -C $buildtype || { echo "Test failed"; exit 1; }
+ctest --test-dir $builddir -C $buildtype --output-on-failure || { echo "Test failed"; exit 1; }
 
 done
 done
