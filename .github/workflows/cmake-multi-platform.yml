@@ -56,5 +56,5 @@ jobs:
       uses: jakoch/install-vulkan-sdk-action@v1.2.5
       
     - name: Test
-      run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }} ${{ matrix.make }}
+      run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }}
         
