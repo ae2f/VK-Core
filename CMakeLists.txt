@@ -30,6 +30,11 @@ if(ae2fVK_needed)
 		option(ALLOW_EXTERNAL_SPIRV_TOOLS	"" ON)
 		option(GLSLANG_ENABLE_INSTALL		"" ON)
 
+  		if(ae2f_IS_SHARED)
+    			message("It is shared libraries.")
+    			option(BUILD_SHARED_LIBS "" ON)
+    		endif()
+
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup glslang glslang main)
