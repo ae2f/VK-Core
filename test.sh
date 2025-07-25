@@ -37,6 +37,8 @@ cmake -S . -B $builddir \
 
 cmake --build $builddir --config $buildtype || { echo "Build failed"; exit 1; }
 ctest --test-dir $builddir -C $buildtype --output-on-failure || { echo "Test failed"; exit 1; }
+rm -rf $builddir
+
 
 done
 done
