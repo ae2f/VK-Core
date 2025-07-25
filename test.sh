@@ -12,6 +12,7 @@ __ae2f_CXX=("ON" "OFF")
 __ae2f_IS_SHARED=("ON" "OFF")
 
 buildtype=$3
+generator=$4
 
 for stdc in ${lstdc[@]}; do
 for stdcc in ${lstdcc[@]}; do
@@ -23,7 +24,7 @@ builddir=build/B$buildtype$stdc$stdcc$makers$_ae2f_CXX$_ae2f_IS_SHARED
 cmake -S . -B $builddir \
     -DCMAKE_C_STANDARD=$stdc \
     -DCMAKE_CXX_STANDARD=$stdcc \
-    $1 $2 \
+    $1 $2 $4 \
     -DCMAKE_MAKE_PROGRAM=make \
     -Dae2f_CXX=$_ae2f_CXX \
     -Dae2f_IS_SHARED=$_ae2f_IS_SHARED || { echo "Configuration failed"; exit 1; }
