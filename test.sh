@@ -19,7 +19,7 @@ for stdc in ${lstdc[@]}; do
 for stdcc in ${lstdcc[@]}; do
 for _ae2f_CXX in ${__ae2f_CXX[@]}; do
 for _ae2f_IS_SHARED in ${__ae2f_IS_SHARED[@]}; do
-for _maker in ${makders[@]}; do
+for _maker in ${makers[@]}; do
 
 builddir=build/B$buildtype$_maker$stdc$stdcc$_ae2f_CXX$_ae2f_IS_SHARED
 
