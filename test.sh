@@ -3,7 +3,7 @@
 # $4     stdc
 # $5     stdcc
 
-makers=("-GNinja" "")
+makers=("")
 # buildtypes=("Release" "Debug" "MinSizeRel" "RelWithDebInfo")
 lstdc=("90" "99" "11" "17" "23")
 lstdcc=("17" "20" "23")
