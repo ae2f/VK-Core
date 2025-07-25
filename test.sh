@@ -19,7 +19,7 @@ for stdcc in ${lstdcc[@]}; do
 for _ae2f_CXX in ${__ae2f_CXX[@]}; do
 for _ae2f_IS_SHARED in ${__ae2f_IS_SHARED[@]}; do
 
-builddir=build/B$buildtype$stdc$stdcc$makers$_ae2f_CXX$_ae2f_IS_SHARED
+builddir=build/B$buildtype$stdc$stdcc$_ae2f_CXX$_ae2f_IS_SHARED
 
 cmake -S . -B $builddir \
     -DCMAKE_C_STANDARD=$stdc \
@@ -28,7 +28,7 @@ cmake -S . -B $builddir \
     -DCMAKE_MAKE_PROGRAM=make \
     -Dae2f_CXX=$_ae2f_CXX \
     -Dae2f_IS_SHARED=$_ae2f_IS_SHARED || { echo "Configuration failed"; exit 1; } \
-    -G"\"$generator Makefiles\""
+    -G"${generator} Makefiles"
 
 cmake --build $builddir --config $buildtype || { echo "Build failed"; exit 1; }
 ctest --test-dir $builddir -C $buildtype --output-on-failure || { echo "Test failed"; exit 1; }
