@@ -1,6 +1,7 @@
 option(ae2fVK_needed	"Is Vulkan needed"	ON)
 option(ae2f_MAC_BUILD	"" ON)
 option(ae2f_DEVEL	"" OFF)
+option(ae2f_TEST	"" ON)
 
 cmake_minimum_required(VERSION 3.10)
 
@@ -23,9 +24,15 @@ else()
 endif()
 
 include(cmake/VK-Core.cmake)
+ae2f_CoreLibFetch(ae2f Core		main)
+ae2f_CoreLibFetch(ae2f Preproc		main)
 
 if(ae2fVK_needed)
 	find_package(Vulkan REQUIRED)
+endif()
+
+option(ae2fVK_need_glslang "" ON)
+if(ae2fVK_need_glslang AND NOT TARGET ae2fVK::Spvc)
 	find_package(glslang)
 
 	if(glslang_FOUND)
@@ -38,47 +45,31 @@ if(ae2fVK_needed)
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
 		ae2f_CoreLibFetch_NS(KhronosGroup glslang glslang main)
-  		set(ae2f-glslang glslang)
+		set(ae2f-glslang glslang)
 	endif()
-endif()
-
-if(NOT TARGET ae2fVK::Core)
-	ae2f_CoreLibFetch(ae2f Core		main)
-	ae2f_CoreLibFetch(ae2f Preproc		main)
 
 	if(ae2f_DEVEL)
-		file(GLOB_RECURSE ae2fVK-Core-defcc ${PROJECT_SOURCE_DIR}/src/*.def.cc)
+		file(GLOB_RECURSE Spvc-defcc ${PROJECT_SOURCE_DIR}/src/Spvc.def.cc)
 	else()
-		set(ae2fVK-Core-defcc "")
+		set(Spvc-defcc "")
 	endif()
 
-	file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/inc/ae2fVK)
 	ae2f_Macro_Lib_V(
-		ae2fVK VK-Core ${ae2f_LIBPREFIX}
-		${PROJECT_SOURCE_DIR}/src "*.imp.c"
-		${PROJECT_SOURCE_DIR}/src "*.def.c*"
+		ae2fVK Spvc ${ae2f_LIBPREFIX}
+		${PROJECT_SOURCE_DIR}/src "Spvc.imp.c"
+		${PROJECT_SOURCE_DIR}/src "Spvc.def.c*"
 		${PROJECT_SOURCE_DIR}/inc/ae2fVK ".h"
 		${PROJECT_SOURCE_DIR}/Config.cmake.in
-		inc ${ae2fVK-Core-defcc}
+		inc ${Spvc-defcc}
 	)
 
- 	add_library(ae2fVK::Core ALIAS ${ae2fVK__VK-Core__TENT})
- 	add_library(ae2f::VK-Core ALIAS ${ae2fVK__VK-Core__TENT})
+	ae2f_titil(${ae2fVK__Spvc__TENT} ae2f::Core)
+	ae2f_titil(${ae2fVK__Spvc__TENT} ae2f::Preproc)
+	ae2f_titil(${ae2fVK__Spvc__TENT} ${ae2f-glslang})
+	ae2f_titil(${ae2fVK__Spvc__TENT} glslang::glslang-default-resource-limits)
 
-	ae2f_titil(${ae2fVK__VK-Core__TENT} ae2f::Core)
-	ae2f_titil(${ae2fVK__VK-Core__TENT} ae2f::Preproc)
-
-	if(ae2fVK_needed)
-		ae2f_titil(${ae2fVK__VK-Core__TENT} Vulkan::Vulkan)
-		ae2f_titil(${ae2fVK__VK-Core__TENT} ${ae2f-glslang})
-		ae2f_titil(${ae2fVK__VK-Core__TENT} glslang::glslang-default-resource-limits)
-	endif()
-
-	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)
-	add_dependencies(${ae2fVK__VK-Core__TENT} glslang::glslang)
 
 	if(ae2f_TEST)
-		find_package(Vulkan REQUIRED)
 		if(ON)
 			ae2f_FileRaw_init(ON 1)
 			ae2f_FileRaw_Run_One(
@@ -86,6 +77,64 @@ if(NOT TARGET ae2fVK::Core)
 				${PROJECT_SOURCE_DIR}/test/compute.auto.glsl.h
 			)
 		endif()
-		ae2f_CoreTestTent(${ae2fVK__VK-Core__TENT} test/src)
+
+		ae2f_CoreTestTent(
+			${ae2fVK__Spvc__TENT}
+			test/spvc/
+		)
 	endif()
+endif()
+
+option(ae2fVK_need_slang "" ON) # on test.
+if(OFF AND ae2fVK_needed AND ae2fVK_need_slang AND NOT TARGET ae2fVK::Slang)
+
+	if(ae2f_DEVEL)
+		file(GLOB_RECURSE Slang-defcc ${PROJECT_SOURCE_DIR}/src/Slang.def.cc)
+	else()
+		set(Slang-defcc "")
+	endif()
+
+	ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
+	ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
+	find_package(Vulkan REQUIRED)
+	# ae2f_CoreLibFetch_NS(shader-slang slang slang master --preset release)
+
+	ae2f_Macro_Lib_V(
+		ae2fVK Slang ${ae2f_LIBPREFIX}
+		${PROJECT_SOURCE_DIR}/src "Slang.imp.c"
+		${PROJECT_SOURCE_DIR}/src "Slang.def.c*"
+		${PROJECT_SOURCE_DIR}/inc/ae2fVK ".h"
+		${PROJECT_SOURCE_DIR}/Config.cmake.in
+		inc ${Slang-defcc}
+	)
+
+	ae2f_titil(${ae2fVK__Slang__TENT} Vulkan::Vulkan)
+endif()
+
+if(NOT TARGET ae2fVK::Core)
+	file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/inc/ae2fVK)
+
+	ae2f_CoreLibTent(Core INTERFACE inc ae2fVK)
+
+	add_library(ae2f::VK-Core ALIAS ${ae2fVK__Core__TENT})
+	add_library(ae2fVK::VK-Core ALIAS ${ae2fVK__Core__TENT})
+
+	target_link_libraries(${ae2fVK__Core__TENT} 
+		INTERFACE ae2f::Core
+		INTERFACE ae2f::Preproc
+	)
+
+	if(ae2fVK_needed)
+		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE Vulkan::Vulkan)
+	endif()
+
+	if(ae2fVK_need_glslang)
+		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::Spvc)
+	endif()
+
+	if(ae2fVK_need_slang)
+		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::Slang)
+	endif()
+
+	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)
 endif()
