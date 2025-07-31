@@ -132,7 +132,7 @@ if(NOT TARGET ae2fVK::Core)
 		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::Spvc)
 	endif()
 
-	if(ae2fVK_need_slang)
+	if(OFF AND ae2fVK_need_slang)
 		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::Slang)
 	endif()
 
