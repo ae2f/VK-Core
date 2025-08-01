@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest, ubuntu-24.04-arm, windows-11-arm]
-        c:  [-DCMAKE_C_COMPILER=clang]
+        c:  [-DCMAKE_C_COMPILER=gcc, -DCMAKE_C_COMPILER=clang, \"\"]
         conf: [Release, Debug]
 
         include:
