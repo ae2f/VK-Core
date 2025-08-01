@@ -52,6 +52,9 @@ jobs:
       if: matrix.c == '-DCMAKE_C_COMPILER=clang' && matrix.os == 'windows-11-arm' || matrix.os == 'windows-latest'
       uses: egor-tensin/setup-clang@v1
 
+    - name: Vulkan SDK
+      uses: humbletim/setup-vulkan-sdk@v1.2.1
+      
     - name: clone vcpkg
       run: git clone https://github.com/microsoft/vcpkg
 
