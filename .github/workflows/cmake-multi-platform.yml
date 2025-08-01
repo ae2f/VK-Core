@@ -55,10 +55,12 @@ jobs:
     - name: Install Vulkan SDK
       uses: jakoch/install-vulkan-sdk-action@v1.2.5
 
-    - name: Install glslang
-      uses: johnwason/vcpkg-action@v7.0.1
+    - name: Setup vcpkg and install dependencies
+      uses: lukka/run-vcpkg@v11
+      id: vcpkg
       with:
-        pkgs: glslang
+        runVcpkgInstall: true
+        setupOnly: true
       
     - name: Test
       run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }}
