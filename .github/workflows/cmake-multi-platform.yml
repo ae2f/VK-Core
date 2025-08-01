@@ -52,6 +52,9 @@ jobs:
       if: matrix.c == '-DCMAKE_C_COMPILER=clang' && matrix.os == 'windows-11-arm' || matrix.os == 'windows-latest'
       uses: egor-tensin/setup-clang@v1
 
+    - name: clone vcpkg
+      run: git clone https://github.com/microsoft/vcpkg
+
     - name: Setup vcpkg and install dependencies
       uses: lukka/run-vcpkg@v7.6
       id: vcpkg
