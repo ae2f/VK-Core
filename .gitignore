@@ -18,3 +18,4 @@ submod
 *.auto.*
 
 inc/
+!inc/ae2fVK/README.md
