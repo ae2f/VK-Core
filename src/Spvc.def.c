@@ -2,6 +2,7 @@
 #define ae2fVK_Spvc_h
 
 #include <glslang/Include/glslang_c_interface.h>
+#include <glslang/Include/glslang_c_shader_types.h>
 #include <glslang/Public/resource_limits_c.h>
 
 #include <ae2f/Call.h>
@@ -53,11 +54,11 @@ ae2f_extern ae2f_SHAREDCALL void ae2fVK_SpvcDel(
 #endif
 #define ae2fVK_Spvc_c
 
-
-ae2f_MAC() _ae2fVK_SpvcMk_imp(
+ae2f_MAC() _ae2fVK_SpvcMkWithMsg_imp(
 		int				v_ret_isgood
 		, ae2fVK_Spvc			v_ret
-		, const glslang_input_t* const	restrict inp
+		, const	glslang_input_t* const	restrict inp
+		, const int			msg
 		)
 {
 	do {
@@ -89,7 +90,7 @@ ae2f_MAC() _ae2fVK_SpvcMk_imp(
 
 		(v_ret_isgood) = glslang_program_link(
 				(v_ret).m_programme
-				, (inp)->stage
+				, msg
 				);
 
 		(v_ret_isgood) = glslang_shader_parse((v_ret).m_shader, inp);
@@ -106,6 +107,10 @@ ae2f_MAC() _ae2fVK_SpvcMk_imp(
 		assert((v_ret).m_spirv_sz);
 	} while(0);
 }
+
+#define __ae2fVK_SpvcMk_imp(v_ret_isgood, v_ret, inp) \
+	__ae2fVK_SpvcMkWithMsg_imp(v_ret_isgood, v_ret, inp, GLSLANG_MSG_VULKAN_RULES_BIT | GLSLANG_MSG_SPV_RULES_BIT)
+
 
 ae2f_MAC() _ae2fVK_SpvcMk(
 		ae2f_err_t* restrict		reterr
