@@ -67,5 +67,5 @@ jobs:
         
         
     - name: Test
-      run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }}
+      run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }} 
         
