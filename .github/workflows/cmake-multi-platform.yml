@@ -56,11 +56,14 @@ jobs:
       run: git clone https://github.com/microsoft/vcpkg
 
     - name: Setup vcpkg and install dependencies
-      uses: lukka/run-vcpkg@v7.6
-      id: vcpkg
-      with:
-        setupOnly: true
-      
+      run: |
+        cd vcpkg
+        sh bootstrap-vcpkg.sh
+        ./vcpkg install vulkan
+        ./vcpkg install glslang
+        cd ..
+        
+        
     - name: Test
       run: ${{ matrix.bash }} ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }}
         
