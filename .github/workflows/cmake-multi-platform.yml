@@ -62,7 +62,6 @@ jobs:
       run: |
         cd vcpkg
         sh bootstrap-vcpkg.sh
-        ./vcpkg install vulkan
         ./vcpkg install glslang
         cd ..
         
