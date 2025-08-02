@@ -1,7 +1,11 @@
 # ae2fVK::Core
 > Rel-v5.15.22
 
-Vulkan + glslang
+Vulkan + [glslang | clspv]
+
+# Warning
+> Setting glslang and clspv on alltogether would cause configuration step failure.  
+> This is the flaw of this repository, not yours in high possibility.
 
 # Dependency
 > These are necessary, or you will not able to build it.
