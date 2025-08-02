@@ -46,8 +46,14 @@ if(ae2fVK_need_glslang AND NOT TARGET ae2fVK::Spvc)
 		option(ALLOW_EXTERNAL_SPIRV_TOOLS	"" ON)
 		option(GLSLANG_ENABLE_INSTALL		"" ON)
 
-		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
-		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
+		if(NOT spirvtool)
+			set(spirvtool ON)
+			ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
+			ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
+		endif()
+
+		option(ALLOW_EXTERNAL_SPIRV_TOOLS "" ON)
+
 		ae2f_CoreLibFetch_NS(KhronosGroup glslang glslang main)
 		set(ae2f-glslang glslang)
 	endif()
@@ -72,15 +78,12 @@ if(ae2fVK_need_glslang AND NOT TARGET ae2fVK::Spvc)
 	ae2f_titil(${ae2fVK__Spvc__TENT} ${ae2f-glslang})
 	ae2f_titil(${ae2fVK__Spvc__TENT} glslang::glslang-default-resource-limits)
 
-
 	if(ae2f_TEST)
-		if(ON)
-			ae2f_FileRaw_init(ON 1)
-			ae2f_FileRaw_Run_One(
-				${PROJECT_SOURCE_DIR}/test-shader/compute.glsl 
-				${PROJECT_SOURCE_DIR}/test/compute.auto.glsl.h
-			)
-		endif()
+		ae2f_FileRaw_init(ON 1)
+		ae2f_FileRaw_Run_One(
+			${PROJECT_SOURCE_DIR}/test-shader/compute.glsl 
+			${PROJECT_SOURCE_DIR}/test/compute.auto.glsl.h
+		)
 
 		ae2f_CoreTestTent(
 			${ae2fVK__Spvc__TENT}
@@ -97,8 +100,11 @@ if(ae2fVK_need_clspv)
 	)
 
 	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv)
-		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
-		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
+		if(NOT spirvtool)
+			set(spirvtool ON)
+			ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
+			ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
+		endif()
 
 		execute_process(
 			WORKING_DIRECTORY
@@ -120,8 +126,23 @@ if(ae2fVK_need_clspv)
 	option(ENABLE_CLSPV_TOOLS_INSTALL ""	ON)
 	option(ENABLE_CLSPV_INSTALL ""		ON)
 	option(SKIP_CLSPV_INSTALL ""		OFF)
+
+	set(SPIRV_HEADERS_SOURCE_DIR "${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Headers")
+	set(SPIRV_TOOLS_SOURCE_DIR "${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools")
+
+	if(NOT EXISTS ${SPIRV_TOOLS_SOURCE_DIR})
+		message(FATAL_ERROR "NO ${SPIRV_TOOLS_SOURCE_DIR}")
+	endif()
+
+	if(NOT EXISTS ${SPIRV_HEADERS_SOURCE_DIR})
+		message(FATAL_ERROR "NO ${SPIRV_HEADERS_SOURCE_DIR}")
+	endif()
+
 	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
-	add_subdirectory(${ae2f_submod}/google/clspv)
+	add_subdirectory(
+		${ae2f_submod}/google/clspv
+		${ae2f_BinRoot}/google/clspv
+	)
 
 	install(TARGETS clspv_core clspv_passes
 		EXPORT ae2fVK-clspvTargets
@@ -133,7 +154,7 @@ if(ae2fVK_need_clspv)
 	target_link_libraries(${ae2fVK__clspv__TENT} INTERFACE clspv_core)
 	target_include_directories(
 		${ae2fVK__clspv__TENT} INTERFACE
-		$<BUILD_INTERFACE:${ae2f_ProjRoot}/submod/google/clspv/include/clspv>
+		$<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include/clspv>
 		$<INSTALL_INTERFACE:include/clspv/>
 	)
 endif()
