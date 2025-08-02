@@ -3,6 +3,10 @@ option(ae2f_MAC_BUILD	"" ON)
 option(ae2f_DEVEL	"" OFF)
 option(ae2f_TEST	"" ON)
 
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release)
+endif()
+
 cmake_minimum_required(VERSION 3.10)
 
 if(ae2f_IS_SHARED)
@@ -31,7 +35,7 @@ if(ae2fVK_needed)
 	find_package(Vulkan REQUIRED)
 endif()
 
-option(ae2fVK_need_glslang "" ON)
+option(ae2fVK_need_glslang "" OFF)
 if(ae2fVK_need_glslang AND NOT TARGET ae2fVK::Spvc)
 	find_package(glslang)
 
@@ -85,7 +89,56 @@ if(ae2fVK_need_glslang AND NOT TARGET ae2fVK::Spvc)
 	endif()
 endif()
 
-option(ae2fVK_need_slang "" ON) # on test.
+option(ae2fVK_need_clspv "" OFF)
+if(ae2fVK_need_clspv)
+	ae2f_CoreLibTent(
+		clspv INTERFACE inc ae2fVK
+		inc/ae2fVK/clspv.h
+	)
+
+	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv)
+		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
+		ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
+
+		execute_process(
+			WORKING_DIRECTORY
+			${ae2f_ProjRoot}
+
+			COMMAND 
+			git clone --recursive https://github.com/google/clspv ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
+		)
+	endif()
+
+	execute_process(
+		WORKING_DIRECTORY
+		${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
+
+		COMMAND
+		python utils/fetch_sources.py
+	)
+
+	option(ENABLE_CLSPV_TOOLS_INSTALL ""	ON)
+	option(ENABLE_CLSPV_INSTALL ""		ON)
+	option(SKIP_CLSPV_INSTALL ""		OFF)
+	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
+	add_subdirectory(${ae2f_submod}/google/clspv)
+
+	install(TARGETS clspv_core clspv_passes
+		EXPORT ae2fVK-clspvTargets
+		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	)
+
+	target_link_libraries(${ae2fVK__clspv__TENT} INTERFACE clspv_core)
+	target_include_directories(
+		${ae2fVK__clspv__TENT} INTERFACE
+		$<BUILD_INTERFACE:${ae2f_ProjRoot}/submod/google/clspv/include/clspv>
+		$<INSTALL_INTERFACE:include/clspv/>
+	)
+endif()
+
+option(ae2fVK_need_slang "" OFF) # on test.
 if(OFF AND ae2fVK_needed AND ae2fVK_need_slang AND NOT TARGET ae2fVK::Slang)
 
 	if(ae2f_DEVEL)
@@ -132,9 +185,14 @@ if(NOT TARGET ae2fVK::Core)
 		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::Spvc)
 	endif()
 
-	if(OFF AND ae2fVK_need_slang)
+	if(ae2fVK_need_slang)
 		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::Slang)
 	endif()
+
+	if(ae2fVK_need_clspv)
+		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::clspv)
+	endif()
+
 
 	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)
 endif()

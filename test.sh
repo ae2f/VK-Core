@@ -29,8 +29,10 @@ cmake -S . -B $builddir \
     -Dae2f_CXX=$_ae2f_CXX \
     -Dae2f_IS_SHARED=$_ae2f_IS_SHARED  \
     $_maker \
-    -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake \
     || { echo "Configuration failed"; exit 1; }
+
+
+    # -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake \
 
 
 #-G "$generator Makefiles" 
