@@ -154,8 +154,8 @@ if(ae2fVK_need_clspv)
 	target_link_libraries(${ae2fVK__clspv__TENT} INTERFACE clspv_core)
 	target_include_directories(
 		${ae2fVK__clspv__TENT} INTERFACE
-		$<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include/clspv>
-		$<INSTALL_INTERFACE:include/clspv/>
+		$<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include>
+		$<INSTALL_INTERFACE:include/>
 	)
 endif()
 
