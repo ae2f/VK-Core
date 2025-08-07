@@ -9,11 +9,6 @@ endif()
 
 cmake_minimum_required(VERSION 3.10)
 
-if(ae2f_IS_SHARED)
-	message("It is shared libraries.")
-	option(BUILD_SHARED_LIBS "" ON)
-endif()
-
 project(VK-Core VERSION 5.15.22)
 enable_testing()
 
@@ -94,10 +89,8 @@ endif()
 
 option(ae2fVK_need_clspv "" OFF)
 if(ae2fVK_need_clspv)
-	ae2f_CoreLibTent(
-		clspv INTERFACE inc ae2fVK
-		inc/ae2fVK/clspv.h
-	)
+	add_library(ae2fVK_clspv INTERFACE)
+	add_library(ae2fVK::clspv ALIAS ae2fVK_clspv)
 
 	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv)
 		if(NOT spirvtool)
@@ -111,7 +104,8 @@ if(ae2fVK_need_clspv)
 			${ae2f_ProjRoot}
 
 			COMMAND 
-			git clone --recursive https://github.com/google/clspv ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
+			git clone --recursive 
+			https://github.com/google/clspv ${ae2f_submod}/google/clspv
 		)
 	endif()
 
@@ -125,7 +119,6 @@ if(ae2fVK_need_clspv)
 
 	option(ENABLE_CLSPV_TOOLS_INSTALL ""	ON)
 	option(ENABLE_CLSPV_INSTALL ""		ON)
-	option(SKIP_CLSPV_INSTALL ""		OFF)
 
 	set(SPIRV_HEADERS_SOURCE_DIR "${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Headers")
 	set(SPIRV_TOOLS_SOURCE_DIR "${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools")
@@ -141,22 +134,18 @@ if(ae2fVK_need_clspv)
 	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
 	add_subdirectory(
 		${ae2f_submod}/google/clspv
-		${ae2f_BinRoot}/google/clspv
+		${ae2f_submod}/google/clspv
 	)
 
 	install(TARGETS clspv_core clspv_passes
-		EXPORT ae2fVK-clspvTargets
-		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	 	EXPORT ae2fVK_clspvTargets
+	 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	)
 
-	target_link_libraries(${ae2fVK__clspv__TENT} INTERFACE clspv_core)
-	target_include_directories(
-		${ae2fVK__clspv__TENT} INTERFACE
-		$<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include>
-		$<INSTALL_INTERFACE:include/>
-	)
+	target_link_libraries(ae2fVK_clspv INTERFACE clspv_core)
+	ae2f_CoreTestTent(ae2fVK_clspv ${ae2f_ProjRoot}/test/clspv)
 endif()
 
 option(ae2fVK_need_slang "" OFF) # on test.
@@ -212,6 +201,12 @@ if(NOT TARGET ae2fVK::Core)
 
 	if(ae2fVK_need_clspv)
 		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE ae2fVK::clspv)
+		install(TARGETS ae2fVK_clspv clspv_core clspv_passes
+			EXPORT ${ae2fVK__Core__TENT}Targets
+			LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		)
 	endif()
 
 
