@@ -61,7 +61,7 @@ function(ae2f_CoreTestTent prm_LibName prm_TestSourcesDir)
 
         foreach(i RANGE 0 ${adjusted_length})
             list(GET files ${i} item)
-            get_filename_component(__NAME ${item} NAME)
+            get_filename_component(__NAME "${item}" NAME)
             add_executable("${prm_LibName}-Test-${__NAME}" ${item})
             target_link_libraries("${prm_LibName}-Test-${__NAME}" ${ARGN} ${prm_LibName})
             add_test(NAME "${prm_LibName}-Test-${__NAME}" COMMAND "${prm_LibName}-Test-${__NAME}")

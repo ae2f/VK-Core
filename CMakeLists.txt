@@ -89,8 +89,9 @@ endif()
 
 option(ae2fVK_need_clspv "" OFF)
 if(ae2fVK_need_clspv)
-	add_library(ae2fVK_clspv INTERFACE)
+	add_library(ae2fVK_clspv INTERFACE "inc/ae2fVK/clspv_clkeys.h" "inc/ae2fVK/clspv.h")
 	add_library(ae2fVK::clspv ALIAS ae2fVK_clspv)
+	option(CLSPV_SHARED_LIB "" ${ae2f_TEST})
 
 	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv)
 		if(NOT spirvtool)
@@ -145,7 +146,7 @@ if(ae2fVK_need_clspv)
 	)
 
 	target_link_libraries(ae2fVK_clspv INTERFACE clspv_core)
-	ae2f_CoreTestTent(ae2fVK_clspv ${ae2f_ProjRoot}/test/clspv)
+	ae2f_CoreTestTent(ae2fVK_clspv test/clspv/)
 endif()
 
 option(ae2fVK_need_slang "" OFF) # on test.
