@@ -134,8 +134,8 @@ if(ae2fVK_need_clspv)
 
 	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
 	add_subdirectory(
-		${ae2f_submod}/google/clspv
-		${ae2f_submod}/google/clspv
+		${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
+	 	${ae2f_submod}/google/clspv
 	)
 
 	install(TARGETS clspv_core clspv_passes
