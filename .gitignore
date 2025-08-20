@@ -17,5 +17,5 @@ submod
 .*/
 *.auto.*
 
-inc/
+# inc/
 !inc/ae2fVK/README.md
