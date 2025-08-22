@@ -110,8 +110,7 @@ if(ae2fVK_need_clspv)
 			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/
 
 			COMMAND
-			git clone https://github.com/Dalmurii/llvm-project
-			third_party/llvm --depth 1
+			git clone https://codeberg.org/dalmurii/llvm third_party/llvm --depth 1
 			)
 	endif()
 
@@ -121,7 +120,7 @@ if(ae2fVK_need_clspv)
 			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
 
 			COMMAND
-			git clone https://codeberg.org/dalmurii/llvm-mirror llvm
+			git clone https://codeberg.org/dalmurii/llvm --depth 1
 			)
 	endif()
 
