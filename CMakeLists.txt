@@ -94,12 +94,6 @@ if(ae2fVK_need_clspv)
 	option(CLSPV_SHARED_LIB "" ${ae2f_TEST})
 
 	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv)
-		if(NOT spirvtool)
-			set(spirvtool ON)
-			ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Headers	main)
-			ae2f_CoreLibFetch_NS(KhronosGroup KhronosGroup SPIRV-Tools	main)
-		endif()
-
 		execute_process(
 			WORKING_DIRECTORY
 			${ae2f_ProjRoot}
@@ -110,32 +104,57 @@ if(ae2fVK_need_clspv)
 		)
 	endif()
 
-	execute_process(
-		WORKING_DIRECTORY
-		${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
+	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party)
+		execute_process(
+			WORKING_DIRECTORY
+			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/
 
-		COMMAND
-		python utils/fetch_sources.py
-	)
+			COMMAND
+			git clone https://github.com/Dalmurii/llvm-project
+			third_party/llvm
+			)
+	endif()
+
+	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/llvm)
+		execute_process(
+			WORKING_DIRECTORY
+			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
+
+			COMMAND
+			git clone https://codeberg.org/dalmurii/llvm-mirror llvm
+			)
+	endif()
+
+	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/SPIRV-Tools)
+		execute_process(
+			WORKING_DIRECTORY
+			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
+
+			COMMAND
+			git clone https://github.com/KhronosGroup/SPIRV-Tools SPIRV-Tools
+			)
+	endif()
+
+	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/SPIRV-Headers)
+		execute_process(
+			WORKING_DIRECTORY
+			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
+
+			COMMAND
+			git clone https://github.com/KhronosGroup/SPIRV-Headers SPIRV-Headers
+			)
+	endif()
 
 	option(ENABLE_CLSPV_TOOLS_INSTALL ""	ON)
 	option(ENABLE_CLSPV_INSTALL ""		ON)
-
-	set(SPIRV_HEADERS_SOURCE_DIR "${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Headers")
-	set(SPIRV_TOOLS_SOURCE_DIR "${ae2f_ProjRoot}/${ae2f_submod}/KhronosGroup/SPIRV-Tools")
-
-	if(NOT EXISTS ${SPIRV_TOOLS_SOURCE_DIR})
-		message(FATAL_ERROR "NO ${SPIRV_TOOLS_SOURCE_DIR}")
-	endif()
-
-	if(NOT EXISTS ${SPIRV_HEADERS_SOURCE_DIR})
-		message(FATAL_ERROR "NO ${SPIRV_HEADERS_SOURCE_DIR}")
-	endif()
-
 	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
+	option(CLANG_LINK_CLANG_DYLIB "" ${ae2f_IS_SHARED})
+	option(LLVM_BUILD_LLVM_DYLIB "" ${ae2f_IS_SHARED})
+	option(LLVM_LINK_LLVM_DYLIB "" ${ae2f_IS_SHARED})
+
 	add_subdirectory(
 		${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
-	 	${ae2f_submod}/google/clspv
+		${ae2f_BinRoot}/${ae2f_submod}/google/clspv
 	)
 
 	install(TARGETS clspv_core clspv_passes
