@@ -111,7 +111,7 @@ if(ae2fVK_need_clspv)
 
 			COMMAND
 			git clone https://github.com/Dalmurii/llvm-project
-			third_party/llvm
+			third_party/llvm --depth 1
 			)
 	endif()
 
