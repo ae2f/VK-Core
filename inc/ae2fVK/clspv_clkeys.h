@@ -1,3 +1,6 @@
+#ifndef ae2fVK_clspv_clkeys_h
+#define ae2fVK_clspv_clkeys_h
+
 #if __ae2f_MACRO_GENERATED
 
 #define ae2f_CL(...) __VA_ARGS__
@@ -19,7 +22,7 @@ typedef long	int64_t;
 #define ae2f_NCL(...) __VA_ARGS__
 
 
-#define ae2f_MAC(...)	void
+#define ae2f_MAC(...)	inline void
 
 #include <stdint.h>
 #include <stddef.h>
@@ -41,5 +44,19 @@ size_t get_global_offset(uint dimindx);
 size_t get_group_id(uint dimindx);
 size_t get_global_linear_id();
 size_t get_local_linear_id();
+
+typedef enum cl_mem_fence_flags {
+	CLK_LOCAL_MEM_FENCE = 0b01,
+	CLK_GLOBAL_MEM_FENCE = 0b10
+} cl_mem_fence_flags;
+
+void barrier(cl_mem_fence_flags flags);
+
+#endif
+
+/** @brief Contains both LOCAL and GLOBAL */
+#define CLK_ALL_MEM_FENCE	(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL_MEM_FENCE)
+
+#define work_group_reduce_add(x) 0
 
 #endif
