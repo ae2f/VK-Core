@@ -1,7 +1,10 @@
 # ae2fVK::Core
 > Rel-v5.15.22
 
-Vulkan + [glslang | clspv]
+> This project has been migrated to [codeberg.org](https://codeberg.org/ae2f/VK-Core).  
+> You will still be able to access to upstream with github page.
+
+Vulkan SDK with [glslang | clspv]
 
 # Warning
 > Setting glslang and clspv on alltogether would cause configuration step failure.  
