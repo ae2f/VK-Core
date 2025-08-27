@@ -1,38 +1,49 @@
 #ifndef ae2fVK_clspv_clkeys_h
 #define ae2fVK_clspv_clkeys_h
 
-#if __ae2f_MACRO_GENERATED
+#ifndef ae2fVK_clspv_IS_OPENCL
+#define ae2fVK_clspv_IS_OPENCL 0
+#endif
 
-#define ae2f_CL(...) __VA_ARGS__
+#if ae2fVK_clspv_IS_OPENCL
+
+#define ae2f_CL(...)	__VA_ARGS__
 #define ae2f_NCL(...)
-
-typedef	uchar	uint8_t;
-typedef ushort	uint16_t;
-typedef uint	uint32_t;
-typedef ulong	uint64_t;
-
-typedef char	int8_t;
-typedef short	int16_t;
-typedef int	int32_t;
-typedef long	int64_t;
 
 #else
 
 #define ae2f_CL(...)
-#define ae2f_NCL(...) __VA_ARGS__
+#define ae2f_NCL(...)	__VA_ARGS__
 
-
-#define ae2f_MAC(...)	inline void
-
-#include <stdint.h>
 #include <stddef.h>
-#include <sys/types.h>
+#include <stdint.h>
 
 #define __kernel
 #define __global
 #define __constant
 #define __local
 
+#endif
+
+#define int8_t		ae2f_CL(char)	ae2f_NCL(int8_t)
+#define uint8_t		ae2f_CL(uchar)	ae2f_NCL(uint8_t)
+#define uchar		ae2f_CL(uchar)	ae2f_NCL(uint8_t)
+
+#define int16_t		ae2f_CL(short)	ae2f_NCL(int16_t)
+#define uint16_t	ae2f_CL(ushort)	ae2f_NCL(uint16_t)
+#define ushort		ae2f_CL(ushort)	ae2f_NCL(uint16_t)
+
+#define int32_t		ae2f_CL(int)	ae2f_NCL(int32_t)
+#define uint32_t	ae2f_CL(uint)	ae2f_NCL(uint32_t)
+#define uint		ae2f_CL(uint)	ae2f_NCL(uint32_t)
+
+#define int64_t		ae2f_CL(long)	ae2f_NCL(int64_t)
+#define uint64_t	ae2f_CL(ulong)	ae2f_NCL(uint64_t)
+#define ulong		ae2f_CL(ulong)	ae2f_NCL(uint64_t)
+
+#define size_t	uint
+
+#if !ae2fVK_clspv_IS_OPENCL
 uint get_work_dim();
 size_t get_global_size(uint dimindx);
 size_t get_global_id(uint dimindx);
@@ -46,8 +57,8 @@ size_t get_global_linear_id();
 size_t get_local_linear_id();
 
 typedef enum cl_mem_fence_flags {
-	CLK_LOCAL_MEM_FENCE = 0b01,
-	CLK_GLOBAL_MEM_FENCE = 0b10
+	CLK_LOCAL_MEM_FENCE =	0b01,
+	CLK_GLOBAL_MEM_FENCE =	0b10
 } cl_mem_fence_flags;
 
 void barrier(cl_mem_fence_flags flags);
