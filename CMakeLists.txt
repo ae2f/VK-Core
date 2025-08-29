@@ -104,7 +104,7 @@ if(ae2fVK_need_clspv)
 		)
 	endif()
 
-	option(CLSPV_USE_SYSTEM_LLVM "Use system LLVM" ON)
+	option(CLSPV_USE_SYSTEM_LLVM "Use system LLVM" OFF)
 	if(NOT CLSPV_USE_SYSTEM_LLVM)
 		if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party)
 			execute_process(
