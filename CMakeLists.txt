@@ -100,28 +100,31 @@ if(ae2fVK_need_clspv)
 
 			COMMAND 
 			git clone --recursive 
-			https://github.com/google/clspv ${ae2f_submod}/google/clspv
+			https://github.com/ae2f/clspv ${ae2f_submod}/google/clspv
 		)
 	endif()
 
-	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party)
-		execute_process(
-			WORKING_DIRECTORY
-			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/
+	option(CLSPV_USE_SYSTEM_LLVM "Use system LLVM" ON)
+	if(NOT CLSPV_USE_SYSTEM_LLVM)
+		if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party)
+			execute_process(
+				WORKING_DIRECTORY
+				${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/
 
-			COMMAND
-			git clone https://codeberg.org/dalmurii/llvm third_party/llvm --depth 1
-			)
-	endif()
+				COMMAND
+				git clone https://codeberg.org/dalmurii/llvm third_party/llvm --depth 1
+				)
+		endif()
 
-	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/llvm)
-		execute_process(
-			WORKING_DIRECTORY
-			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
+		if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/llvm)
+			execute_process(
+				WORKING_DIRECTORY
+				${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
 
-			COMMAND
-			git clone https://codeberg.org/dalmurii/llvm --depth 1
-			)
+				COMMAND
+				git clone https://codeberg.org/dalmurii/llvm --depth 1
+				)
+		endif()
 	endif()
 
 	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/SPIRV-Tools)
