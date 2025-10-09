@@ -15,8 +15,8 @@ int main() {
 
     // Compile
     size_t outputSpvSize = 0;
-    char* outputSpv = nullptr;
-    char* outputBuildLog = nullptr;
+    char* outputSpv = NULL;
+    char* outputBuildLog = NULL;
     ClspvError ret = clspvCompileFromSourcesString(1,
                                                    NULL,
                                                    (const char**)&clSrc,

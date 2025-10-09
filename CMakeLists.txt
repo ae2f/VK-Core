@@ -149,10 +149,12 @@ if(ae2fVK_need_clspv)
 
 	option(ENABLE_CLSPV_TOOLS_INSTALL ""	ON)
 	option(ENABLE_CLSPV_INSTALL ""		ON)
-	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
-	option(CLANG_LINK_CLANG_DYLIB "" ${ae2f_IS_SHARED})
-	option(LLVM_BUILD_LLVM_DYLIB "" ${ae2f_IS_SHARED})
-	option(LLVM_LINK_LLVM_DYLIB "" ${ae2f_IS_SHARED})
+
+  set(CLSPV_SHARED_LIB ${ae2f_IS_SHARED} CACHE BOOL "")
+  set(LLVM_BUILD_LLVM_DYLIB ${ae2f_IS_SHARED} CACHE BOOL "")
+  set(LLVM_LINK_LLVM_DYLIB ${ae2f_IS_SHARED} CACHE BOOL "")
+
+  message("LNKLLVMDYLIB: ${LLVM_LINK_LLVM_DYLIB}")
 
 	add_subdirectory(
 		${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
@@ -167,6 +169,11 @@ if(ae2fVK_need_clspv)
 	)
 
 	target_link_libraries(ae2fVK_clspv INTERFACE clspv_core)
+  target_include_directories(
+    ae2fVK_clspv INTERFACE 
+    $<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include/>
+    $<INSTALL_INTERFACE:include/>
+  )
 	ae2f_CoreTestTent(ae2fVK_clspv test/clspv/)
 endif()
 
@@ -198,8 +205,8 @@ endif()
 
 if(NOT TARGET ae2fVK::Core)
 	file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/inc/ae2fVK)
-
-	ae2f_CoreLibTent(Core INTERFACE inc ae2fVK)
+  file(GLOB_RECURSE vkcore-inc ${PROJECT_SOURCE_DIR}/inc/ae2fVK/*)
+	ae2f_CoreLibTent(Core INTERFACE inc ae2fVK ${vkcore-inc})
 
 	add_library(ae2f::VK-Core ALIAS ${ae2fVK__Core__TENT})
 	add_library(ae2fVK::VK-Core ALIAS ${ae2fVK__Core__TENT})
@@ -230,7 +237,6 @@ if(NOT TARGET ae2fVK::Core)
 			RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 		)
 	endif()
-
 
 	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)
 endif()
