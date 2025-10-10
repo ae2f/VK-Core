@@ -12,16 +12,6 @@ cmake_minimum_required(VERSION 3.10)
 project(VK-Core VERSION 5.15.22)
 enable_testing()
 
-if(ae2f_MAC_BUILD)
-	function(ae2f_titil tar)
-		target_link_libraries(${tar} PUBLIC ${ARGN})
-	endfunction()
-else()
-	function(ae2f_titil tar)
-		target_link_libraries(${tar} INTERFACE ${ARGN})
-	endfunction()
-endif()
-
 include(cmake/VK-Core.cmake)
 ae2f_CoreLibFetch(ae2f Core		main)
 ae2f_CoreLibFetch(ae2f Preproc		main)
@@ -68,10 +58,10 @@ if(ae2fVK_need_glslang AND NOT TARGET ae2fVK::Spvc)
 		inc ${Spvc-defcc}
 	)
 
-	ae2f_titil(${ae2fVK__Spvc__TENT} ae2f::Core)
-	ae2f_titil(${ae2fVK__Spvc__TENT} ae2f::Preproc)
-	ae2f_titil(${ae2fVK__Spvc__TENT} ${ae2f-glslang})
-	ae2f_titil(${ae2fVK__Spvc__TENT} glslang::glslang-default-resource-limits)
+  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ae2f::Core)
+  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ae2f::Preproc)
+  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ${ae2f-glslang})
+  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE glslang::glslang-default-resource-limits)
 
 	if(ae2f_TEST)
 		ae2f_FileRaw_init(ON 1)
@@ -192,7 +182,7 @@ if(OFF AND ae2fVK_needed AND ae2fVK_need_slang AND NOT TARGET ae2fVK::Slang)
 	# ae2f_CoreLibFetch_NS(shader-slang slang slang master --preset release)
 
 	ae2f_Macro_Lib_V(
-		ae2fVK Slang ${ae2f_LIBPREFIX}
+    ae2fVK Slang INTERFACE
 		${PROJECT_SOURCE_DIR}/src "Slang.imp.c"
 		${PROJECT_SOURCE_DIR}/src "Slang.def.c*"
 		${PROJECT_SOURCE_DIR}/inc/ae2fVK ".h"
