@@ -79,7 +79,7 @@ endif()
 
 option(ae2fVK_need_clspv "" OFF)
 if(ae2fVK_need_clspv)
-	add_library(ae2fVK_clspv INTERFACE "inc/ae2fVK/clspv_clkeys.h" "inc/ae2fVK/clspv.h")
+	add_library(ae2fVK_clspv INTERFACE "inc/ae2fVK/clspv.h")
 	add_library(ae2fVK::clspv ALIAS ae2fVK_clspv)
 	option(CLSPV_SHARED_LIB "" ${ae2f_TEST})
 
