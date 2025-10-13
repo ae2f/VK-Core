@@ -11,7 +11,7 @@
 
 #include "./sclr.h"
 
-#if ae2fVK_NCL(!)0
+#if !ae2fVK_clspv_IS_OPENCL
 /** 
  * @brief 
  * Returns the number of dimensions in use. \n
@@ -100,7 +100,7 @@ size_t get_global_offset(uint dimindx);
 size_t get_group_id(uint dimindx);
 #endif
 
-#if ae2fVK_NCL(!)0
+#if !ae2fVK_clspv_IS_OPENCL 
 
 /**
  * @returns 

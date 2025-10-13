@@ -79,9 +79,11 @@ endif()
 
 option(ae2fVK_need_clspv "" OFF)
 if(ae2fVK_need_clspv)
-	add_library(ae2fVK_clspv INTERFACE "inc/ae2fVK/clspv.h")
+	file(GLOB_RECURSE ae2fvkclspv-inc "${PROJECT_SOURCE_DIR}/inc/ae2fVK/clspv/*")
+
+	add_library(ae2fVK_clspv INTERFACE "inc/ae2fVK/clspv.h" ${ae2fvkclspv-inc})
 	add_library(ae2fVK::clspv ALIAS ae2fVK_clspv)
-	option(CLSPV_SHARED_LIB "" ${ae2f_TEST})
+	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
 
 	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv)
 		execute_process(
@@ -91,7 +93,7 @@ if(ae2fVK_need_clspv)
 			COMMAND 
 			git clone --recursive 
 			https://github.com/ae2f/clspv ${ae2f_submod}/google/clspv
-		)
+			)
 	endif()
 
 	option(CLSPV_USE_SYSTEM_LLVM "Use system LLVM" OFF)
@@ -140,30 +142,30 @@ if(ae2fVK_need_clspv)
 	option(ENABLE_CLSPV_TOOLS_INSTALL ""	ON)
 	option(ENABLE_CLSPV_INSTALL ""		ON)
 
-  set(CLSPV_SHARED_LIB ${ae2f_IS_SHARED} CACHE BOOL "")
-  set(LLVM_BUILD_LLVM_DYLIB ${ae2f_IS_SHARED} CACHE BOOL "")
-  set(LLVM_LINK_LLVM_DYLIB ${ae2f_IS_SHARED} CACHE BOOL "")
+	set(CLSPV_SHARED_LIB ${ae2f_IS_SHARED} CACHE BOOL "")
+	set(LLVM_BUILD_LLVM_DYLIB ${ae2f_IS_SHARED} CACHE BOOL "")
+	set(LLVM_LINK_LLVM_DYLIB ${ae2f_IS_SHARED} CACHE BOOL "")
 
-  message("LNKLLVMDYLIB: ${LLVM_LINK_LLVM_DYLIB}")
+	message("LNKLLVMDYLIB: ${LLVM_LINK_LLVM_DYLIB}")
 
 	add_subdirectory(
 		${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
 		${ae2f_BinRoot}/${ae2f_submod}/google/clspv
-	)
+		)
 
 	install(TARGETS clspv_core clspv_passes
-	 	EXPORT ae2fVK_clspvTargets
-	 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-	)
+		EXPORT ae2fVK_clspvTargets
+		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		)
 
 	target_link_libraries(ae2fVK_clspv INTERFACE clspv_core)
-  target_include_directories(
-    ae2fVK_clspv INTERFACE 
-    $<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include/>
-    $<INSTALL_INTERFACE:include/>
-  )
+	target_include_directories(
+		ae2fVK_clspv INTERFACE 
+		$<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include/>
+		$<INSTALL_INTERFACE:include/>
+		)
 	ae2f_CoreTestTent(ae2fVK_clspv test/clspv/)
 endif()
 
@@ -182,20 +184,20 @@ if(OFF AND ae2fVK_needed AND ae2fVK_need_slang AND NOT TARGET ae2fVK::Slang)
 	# ae2f_CoreLibFetch_NS(shader-slang slang slang master --preset release)
 
 	ae2f_Macro_Lib_V(
-    ae2fVK Slang INTERFACE
+		ae2fVK Slang INTERFACE
 		${PROJECT_SOURCE_DIR}/src "Slang.imp.c"
 		${PROJECT_SOURCE_DIR}/src "Slang.def.c*"
 		${PROJECT_SOURCE_DIR}/inc/ae2fVK ".h"
 		${PROJECT_SOURCE_DIR}/Config.cmake.in
 		inc ${Slang-defcc}
-	)
+		)
 
 	ae2f_titil(${ae2fVK__Slang__TENT} Vulkan::Vulkan)
 endif()
 
 if(NOT TARGET ae2fVK::Core)
 	file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/inc/ae2fVK)
-  file(GLOB_RECURSE vkcore-inc ${PROJECT_SOURCE_DIR}/inc/ae2fVK/*)
+	file(GLOB_RECURSE vkcore-inc ${PROJECT_SOURCE_DIR}/inc/ae2fVK/*)
 	ae2f_CoreLibTent(Core INTERFACE inc ae2fVK ${vkcore-inc})
 
 	add_library(ae2f::VK-Core ALIAS ${ae2fVK__Core__TENT})
@@ -204,7 +206,7 @@ if(NOT TARGET ae2fVK::Core)
 	target_link_libraries(${ae2fVK__Core__TENT} 
 		INTERFACE ae2f::Core
 		INTERFACE ae2f::Preproc
-	)
+		)
 
 	if(ae2fVK_needed)
 		target_link_libraries(${ae2fVK__Core__TENT} INTERFACE Vulkan::Vulkan)
@@ -225,7 +227,7 @@ if(NOT TARGET ae2fVK::Core)
 			LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 			RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-		)
+			)
 	endif()
 
 	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)

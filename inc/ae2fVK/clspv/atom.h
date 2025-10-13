@@ -12,9 +12,8 @@
 #define ae2fVK_clspv_atom_h
 
 #include "./key.h"
-#include "./sclr.h"
 
-#if (ae2fVK_NCL(!)0)
+#if !ae2fVK_clspv_IS_OPENCL 
 
 #define atomic_store(ptr, val)
 #define atomic_store_explicit(ptr, val, order)
@@ -52,6 +51,5 @@
 #define atomic_max(ptr, val)				0
 
 #endif
-
 
 #endif

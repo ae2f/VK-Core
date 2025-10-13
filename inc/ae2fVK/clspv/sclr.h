@@ -2,15 +2,18 @@
 #define ae2fVK_clspv_sclr_h
 
 #include "./key.h"
-#include "./stdint.h"
 
-#if ae2fVK_NCL(!)0
+#if !ae2fVK_clspv_IS_OPENCL
+
+#define half	float
+#define uchar	unsigned char
+#define ushort	unsigned short
+#define uint	unsigned int
+#define ulong	unsigned long
+
 #include <stdbool.h>
 #include <stddef.h>
-#else
-#define bool	unsigned
-#endif
 
-#define half	ae2fVK_NCL(float) ae2fVK_CL(half)
+#endif
 
 #endif

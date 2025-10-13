@@ -25,12 +25,12 @@ void barrier(cl_mem_fence_flags flags);
 #define CLK_GLOBAL_MEM_FENCE	CLK_GLOBAL_MEM_FENCE
 #define CLK_IMAGE_MEM_FENCE	CLK_IMAGE_MEM_FENCE
 
+#endif
+
 /** @brief Contains both LOCAL and GLOBAL */
 #define CLK_ALL_MEM_FENCE	(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL_MEM_FENCE)
 
 /** @brief Contains ALL with IMAGE */
 #define CLK_ALLIMG_MEM_FENCE	(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL_MEM_FENCE | CLK_IMAGE_MEM_FENCE)
-
-#endif
 
 #endif

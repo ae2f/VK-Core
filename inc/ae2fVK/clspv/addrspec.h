@@ -3,9 +3,11 @@
 
 #include "./key.h"
 
-#define __kernel	ae2fVK_CL(__kernel)
-#define __global	ae2fVK_CL(__global)
-#define __constant	ae2fVK_CL(__constant)
-#define __local		ae2fVK_CL(__local)
+#if !ae2fVK_clspv_IS_OPENCL
+#define __kernel	
+#define __global	
+#define __constant	
+#define __local		
+#endif
 
 #endif
