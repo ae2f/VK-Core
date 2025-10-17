@@ -11,44 +11,24 @@
 #ifndef ae2fVK_clspv_atom_h
 #define ae2fVK_clspv_atom_h
 
-#include "./key.h"
+#include "./sclr.h"
 
 #if !ae2fVK_clspv_IS_OPENCL 
 
-#define atomic_store(ptr, val)
-#define atomic_store_explicit(ptr, val, order)
+uint atom_cmpxchg_u(volatile uint *p, uint cmp, uint val);
+int atom_cmpxchg_i(volatile int *p, int cmp, int val);
 
-#define atomic_load(ptr)				0
-#define atomic_load_explicit(ptr, order)		0
+int atom_xchg_i(volatile int *p, int val);
+int atom_xchg_u(volatile uint *p, uint val);
 
-#define atomic_fetch_add(ptr, val)			0
-#define atomic_fetch_add_explicit(ptr, val, order)	0
 
-#define atomic_fetch_sub(ptr, val)			0
-#define atomic_fetch_sub_explicit(ptr, val, order)	0
+#else
 
-#define atomic_fetch_or(ptr, val)			0
-#define atomic_fetch_or_explicit(ptr, val, order)	0
+#define atom_cmpxchg_i	atom_cmpxchg
+#define atom_cmpxchg_u	atom_cmpxchg
 
-#define atomic_fetch_xor(ptr, val)			0
-#define atomic_fetch_xor_explicit(ptr, val, order)	0
-
-#define atomic_fetch_and(ptr, val)			0
-#define atomic_fetch_and_explicit(ptr, val, order)	0
-
-#define atomic_fetch_min(ptr, val)			0
-#define atomic_fetch_min_explicit(ptr, val, order)	0
-
-#define atomic_fetch_max(ptr, val)			0
-#define atomic_fetch_max_explicit(ptr, val, order)	0
-
-#define atomic_add(ptr, val)				0
-#define atomic_sub(ptr, val)				0
-#define atomic_or(ptr, val)				0
-#define atomic_xor(ptr, val)				0
-#define atomic_and(ptr, val)				0
-#define atomic_min(ptr, val)				0
-#define atomic_max(ptr, val)				0
+#define atom_xchg_u	atom_xchg
+#define atom_xchg_i	atom_xchg
 
 #endif
 

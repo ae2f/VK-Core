@@ -6,7 +6,7 @@
 #if !ae2fVK_clspv_IS_OPENCL
 #define __kernel	
 #define __global	
-#define __constant	
+#define __constant	const
 #define __local		
 #endif
 
