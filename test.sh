@@ -20,7 +20,7 @@ for _ae2f_CXX in ${__ae2f_CXX[@]}; do
 for _ae2f_IS_SHARED in ${__ae2f_IS_SHARED[@]}; do
 for _maker in ${makers[@]}; do
 
-builddir=build/B$buildtype$_maker$stdc$stdcc$_ae2f_CXX$_ae2f_IS_SHARED
+builddir=build/B$_maker$stdc$stdcc$_ae2f_CXX$_ae2f_IS_SHARED
 
 cmake -S . -B $builddir \
     -DCMAKE_C_STANDARD=$stdc \
