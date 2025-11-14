@@ -56,24 +56,24 @@ if(ae2fVK_need_glslang AND NOT TARGET ae2fVK::Spvc)
 		${PROJECT_SOURCE_DIR}/inc/ae2fVK ".h"
 		${PROJECT_SOURCE_DIR}/Config.cmake.in
 		inc ${Spvc-defcc}
-	)
+		)
 
-  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ae2f::Core)
-  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ae2f::Preproc)
-  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ${ae2f-glslang})
-  target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE glslang::glslang-default-resource-limits)
+	target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ae2f::Core)
+	target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ae2f::Preproc)
+	target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE ${ae2f-glslang})
+	target_link_libraries(${ae2fVK__Spvc__TENT} INTERFACE glslang::glslang-default-resource-limits)
 
 	if(ae2f_TEST)
 		ae2f_FileRaw_init(ON 1)
 		ae2f_FileRaw_Run_One(
 			${PROJECT_SOURCE_DIR}/test-shader/compute.glsl 
 			${PROJECT_SOURCE_DIR}/test/compute.auto.glsl.h
-		)
+			)
 
 		ae2f_CoreTestTent(
 			${ae2fVK__Spvc__TENT}
 			test/spvc/
-		)
+			)
 	endif()
 endif()
 
@@ -85,57 +85,22 @@ if(ae2fVK_need_clspv)
 	add_library(ae2fVK::clspv ALIAS ae2fVK_clspv)
 	option(CLSPV_SHARED_LIB "" ${ae2f_IS_SHARED})
 
-	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv)
+	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/ae3f/aclspv)
 		execute_process(
 			WORKING_DIRECTORY
 			${ae2f_ProjRoot}
 
 			COMMAND 
-			git clone --recursive 
-			https://github.com/ae2f/clspv ${ae2f_submod}/google/clspv
+			git clone -b mirror-c
+			https://codeberg.org/ae3f/aclspv ${ae2f_submod}/ae3f/aclspv
 			)
-	endif()
 
-	option(CLSPV_USE_SYSTEM_LLVM "Use system LLVM" OFF)
-	if(NOT CLSPV_USE_SYSTEM_LLVM)
-		if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party)
-			execute_process(
-				WORKING_DIRECTORY
-				${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/
-
-				COMMAND
-				git clone https://codeberg.org/dalmurii/llvm third_party/llvm --depth 1
-				)
-		endif()
-
-		if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/llvm)
-			execute_process(
-				WORKING_DIRECTORY
-				${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
-
-				COMMAND
-				git clone https://codeberg.org/dalmurii/llvm --depth 1
-				)
-		endif()
-	endif()
-
-	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/SPIRV-Tools)
 		execute_process(
 			WORKING_DIRECTORY
-			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
+			${ae2f_ProjRoot}/${ae2f_submod}/ae3f/aclspv
 
 			COMMAND
-			git clone https://github.com/KhronosGroup/SPIRV-Tools SPIRV-Tools
-			)
-	endif()
-
-	if(NOT EXISTS ${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party/SPIRV-Headers)
-		execute_process(
-			WORKING_DIRECTORY
-			${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/third_party
-
-			COMMAND
-			git clone https://github.com/KhronosGroup/SPIRV-Headers SPIRV-Headers
+			python utils/fetch_sources.py
 			)
 	endif()
 
@@ -149,8 +114,8 @@ if(ae2fVK_need_clspv)
 	message("LNKLLVMDYLIB: ${LLVM_LINK_LLVM_DYLIB}")
 
 	add_subdirectory(
-		${ae2f_ProjRoot}/${ae2f_submod}/google/clspv
-		${ae2f_BinRoot}/${ae2f_submod}/google/clspv
+		${ae2f_ProjRoot}/${ae2f_submod}/ae3f/aclspv
+		${ae2f_BinRoot}/${ae2f_submod}/ae3f/aclspv
 		)
 
 	install(TARGETS clspv_core clspv_passes
@@ -163,7 +128,7 @@ if(ae2fVK_need_clspv)
 	target_link_libraries(ae2fVK_clspv INTERFACE clspv_core)
 	target_include_directories(
 		ae2fVK_clspv INTERFACE 
-		$<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/google/clspv/include/>
+		$<BUILD_INTERFACE:${ae2f_ProjRoot}/${ae2f_submod}/ae3f/aclspv/include/>
 		$<INSTALL_INTERFACE:include/>
 		)
 	ae2f_CoreTestTent(ae2fVK_clspv test/clspv/)
@@ -231,4 +196,5 @@ if(NOT TARGET ae2fVK::Core)
 	endif()
 
 	ae2fVK_CoreAppendInclude(${PROJECT_SOURCE_DIR}/inc)
+	ae2f_CoreTestTentVerbose(${ae2fVK__Core__TENT} ${PROJECT_SOURCE_DIR}/test/vk)
 endif()
