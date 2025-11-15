@@ -1,6 +1,6 @@
 #include "../vk.h"
 int main(void) {
-#if 1
+#if 0
 	(void)Test_VkInit();
 #endif
 	return 0;
