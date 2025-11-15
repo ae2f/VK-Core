@@ -10,7 +10,9 @@ VkResult vkres = VK_SUCCESS;
 static VkInstanceCreateInfo	vulkancreat;
 static VkInstance		vulkan;
 
-static VkPhysicalDevice			vkphydev;
+static VkPhysicalDevice*		p_vkphydev;
+#define vkphydev			(*p_vkphydev)
+
 static uint32_t				vkphydevcount = 0;
 static VkPhysicalDeviceMemoryProperties	vkphydevmemprops;
 
@@ -61,10 +63,10 @@ static void Test_VkInit(void) {
 
 	VkDeviceQueueCreateInfo queueCreateInfo;
 
-	vkdev = 0;
+	vkdev = VK_NULL_HANDLE;
 	vulkan = 0;
 	vkphydevcount = 0;
-	vkphydev = 0;
+	p_vkphydev = NULL;
 
 	memset(&vkphydevmemprops, 0, sizeof(vkphydevmemprops));
 	memset(&vkdevcreat, 0, sizeof(vkdevcreat));
@@ -84,12 +86,11 @@ static void Test_VkInit(void) {
 	assert(vkres == VK_SUCCESS && "vkCreateInstance has failed");
 	assert(vulkan);
 
-	vkphydevcount = 0;
 
 	vkres = vkEnumeratePhysicalDevices(
 			vulkan
 			, &vkphydevcount
-			, 0
+			, NULL
 			);
 
 	assert(vkres == VK_SUCCESS);
@@ -97,19 +98,17 @@ static void Test_VkInit(void) {
 
 	printf("Number of Physical Device available: %u\n", vkphydevcount);
 
-	vkphydevcount = 1;
+	p_vkphydev = malloc((size_t)(sizeof(VkPhysicalDevice) * vkphydevcount));
+	assert(p_vkphydev);
 
 	vkres = vkEnumeratePhysicalDevices(
 			vulkan
 			, &vkphydevcount
-			, &vkphydev
+			, p_vkphydev
 			);
 
 	assert(vkres == VK_SUCCESS || vkres == VK_INCOMPLETE && "vkEnumeratePhysicalDevices has failed.");
-	assert(vkphydevcount != 0 && "vkphydevcount has changed, which is not expected.");
 	assert(vkphydev && "vkphydev is no initialised");
-
-	vkphydevcount = 1;
 
 	vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
@@ -151,7 +150,7 @@ static void Test_VkInit(void) {
 			);
 
 	assert(vkres == VK_SUCCESS && "vkCreateDevice has failed.");
-	assert(vkdev && "vkdev is not initialised");
+	assert(vkdev == VK_NULL_HANDLE && "vkdev is not initialised");
 
 	vkGetPhysicalDeviceMemoryProperties(
 			vkphydev
@@ -164,4 +163,5 @@ static void Test_VkInit(void) {
 static void Test_VkEnd(void) {
 	if(vkdev)	vkDestroyDevice(vkdev, 0);
 	if(vulkan)	vkDestroyInstance(vulkan, 0);
+	free(p_vkphydev);
 }
