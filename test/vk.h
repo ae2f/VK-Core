@@ -64,6 +64,7 @@ static void Test_VkInit(void) {
 	VkDeviceQueueCreateInfo queueCreateInfo;
 	const char* instanceExtensions[] = {
 		"VK_KHR_surface",
+		"VK_EXT_headless_surface"
 	};
 
 	s_vkdev = VK_NULL_HANDLE;
