@@ -20,16 +20,19 @@ static VkQueue			vkqueue;
 
 static uint32_t find_queue_family(VkPhysicalDevice phydev) {
         uint32_t queueFamilyCount = 0;
+
+        union {
+                void*   v;
+                VkQueueFamilyProperties* p;
+        } queueFamilies; 
+        uint32_t queueFamilyIndex = UINT32_MAX;
+
         vkGetPhysicalDeviceQueueFamilyProperties(
                         phydev
                         , &queueFamilyCount
                         , NULL
                         );
-
-        union upVkQueueFamilyProperties {
-                void*   v;
-                VkQueueFamilyProperties* p;
-        } queueFamilies;  
+ 
                         
         queueFamilies.v = malloc((size_t)(queueFamilyCount * sizeof(VkQueueFamilyProperties)));
 
@@ -39,97 +42,103 @@ static uint32_t find_queue_family(VkPhysicalDevice phydev) {
                         , queueFamilies.p
                         );
 
-        uint32_t queueFamilyIndex = UINT32_MAX;
-        for (uint32_t i = 0; i < queueFamilyCount; i++) {
-                if (queueFamilies.p[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-                        queueFamilyIndex = i;
-                        break;
-                }
-        }
-        free(queueFamilies.v);
-        return queueFamilyIndex;
+	{
+		uint32_t i = queueFamilyCount;
+		while (i--) {
+			if (queueFamilies.p[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+				queueFamilyIndex = i;
+				break;
+			}
+		}
+	}
+	free(queueFamilies.v);
+	return queueFamilyIndex;
 }
 
 static void Test_VkInit(void) {
-        vkdev = 0;
-        vulkan = 0;
-        vkphydevcount = 0;
-        vkphydev = 0;
-        memset(&vkphydevmemprops, 0, sizeof(vkphydevmemprops));
-        memset(&vkdevcreat, 0, sizeof(vkdevcreat));
-        memset(&vulkancreat, 0, sizeof(vulkancreat));
+	uint32_t queueFamilyIndex;
+	float queuePriority = 1.0f;
+
+	vkdev = 0;
+	vulkan = 0;
+	vkphydevcount = 0;
+	vkphydev = 0;
+
+	memset(&vkphydevmemprops, 0, sizeof(vkphydevmemprops));
+	memset(&vkdevcreat, 0, sizeof(vkdevcreat));
+	memset(&vulkancreat, 0, sizeof(vulkancreat));
 
 
-        vulkancreat.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        vulkancreat.enabledExtensionCount = 0;
-        vulkancreat.enabledLayerCount = 0;
-        vulkancreat.ppEnabledExtensionNames = 0;
-        vulkancreat.ppEnabledLayerNames = 0;
-        vulkancreat.flags = 0;
-        vulkancreat.pApplicationInfo = NULL;
+	vulkancreat.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+	vulkancreat.enabledExtensionCount = 0;
+	vulkancreat.enabledLayerCount = 0;
+	vulkancreat.ppEnabledExtensionNames = 0;
+	vulkancreat.ppEnabledLayerNames = 0;
+	vulkancreat.flags = 0;
+	vulkancreat.pApplicationInfo = NULL;
 
-        vkres = vkCreateInstance(&vulkancreat, 0, &vulkan);
-        printf("vkCreateInstance result: %d\n", vkres);
-        assert(vkres == VK_SUCCESS && "vkCreateInstance has failed");
+	vkres = vkCreateInstance(&vulkancreat, 0, &vulkan);
+	printf("vkCreateInstance result: %d\n", vkres);
+	assert(vkres == VK_SUCCESS && "vkCreateInstance has failed");
 
-        vkphydevcount = 0;
+	vkphydevcount = 0;
 
-        vkres = vkEnumeratePhysicalDevices(
-                        vulkan
-                        , &vkphydevcount
-                        , 0
-                        );
+	vkres = vkEnumeratePhysicalDevices(
+			vulkan
+			, &vkphydevcount
+			, 0
+			);
 
-        assert(vkres == VK_SUCCESS);
-        assert(vkphydevcount && "vkphydevcount must be greater than 0.");
-        printf("Number of Physical Device available: %u\n", vkphydevcount);
+	assert(vkres == VK_SUCCESS);
+	assert(vkphydevcount && "vkphydevcount must be greater than 0.");
+	printf("Number of Physical Device available: %u\n", vkphydevcount);
 
-        vkphydevcount = 1;
+	vkphydevcount = 1;
 
-        vkres = vkEnumeratePhysicalDevices(
-                        vulkan
-                        , &vkphydevcount
-                        , &vkphydev
-                        );
+	vkres = vkEnumeratePhysicalDevices(
+			vulkan
+			, &vkphydevcount
+			, &vkphydev
+			);
 
-        assert(vkres == VK_SUCCESS || vkres == VK_INCOMPLETE && "vkEnumeratePhysicalDevices has failed.");
-        assert(vkphydevcount != 0 && "vkphydevcount has changed, which is not expected.");
-        assert(vkphydev && "vkphydev is no initialised");
+	assert(vkres == VK_SUCCESS || vkres == VK_INCOMPLETE && "vkEnumeratePhysicalDevices has failed.");
+	assert(vkphydevcount != 0 && "vkphydevcount has changed, which is not expected.");
+	assert(vkphydev && "vkphydev is no initialised");
 
-        vkphydevcount = 1;
+	vkphydevcount = 1;
 
-        vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+	vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
-        // Find a queue family
-        uint32_t queueFamilyIndex = find_queue_family(vkphydev);
-        assert(queueFamilyIndex != UINT32_MAX && "No suitable queue family found");
+	// Find a queue family
+	queueFamilyIndex = find_queue_family(vkphydev);
+	assert(queueFamilyIndex != UINT32_MAX && "No suitable queue family found");
 
-        // Initialize VkDeviceQueueCreateInfo
-        float queuePriority = 1.0f;
-        VkDeviceQueueCreateInfo queueCreateInfo;
-        memset(&queueCreateInfo, 0, sizeof(queueCreateInfo));
+	// Initialize VkDeviceQueueCreateInfo
+	queuePriority = 1.0f;
+	VkDeviceQueueCreateInfo queueCreateInfo;
+	memset(&queueCreateInfo, 0, sizeof(queueCreateInfo));
 
-        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
-        queueCreateInfo.queueCount = 1;
-        queueCreateInfo.pQueuePriorities = &queuePriority;
+	queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+	queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
+	queueCreateInfo.queueCount = 1;
+	queueCreateInfo.pQueuePriorities = &queuePriority;
 
-        // Initialize VkDeviceCreateInfo
-        vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        vkdevcreat.queueCreateInfoCount = 1;
-        vkdevcreat.pQueueCreateInfos = &queueCreateInfo;
-        vkdevcreat.enabledExtensionCount = 0;
-        vkdevcreat.ppEnabledExtensionNames = NULL;
-        vkdevcreat.enabledLayerCount = 0;
-        vkdevcreat.ppEnabledLayerNames = NULL;
-        vkdevcreat.flags = 0;
+	// Initialize VkDeviceCreateInfo
+	vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+	vkdevcreat.queueCreateInfoCount = 1;
+	vkdevcreat.pQueueCreateInfos = &queueCreateInfo;
+	vkdevcreat.enabledExtensionCount = 0;
+	vkdevcreat.ppEnabledExtensionNames = NULL;
+	vkdevcreat.enabledLayerCount = 0;
+	vkdevcreat.ppEnabledLayerNames = NULL;
+	vkdevcreat.flags = 0;
 
-        vkres = vkCreateDevice(
-                        vkphydev
-                        , &vkdevcreat
-                        , 0
-                        , &vkdev
-                        );
+	vkres = vkCreateDevice(
+			vkphydev
+			, &vkdevcreat
+			, 0
+			, &vkdev
+			);
 
 	vkGetDeviceQueue(
 			vkdev
@@ -138,18 +147,18 @@ static void Test_VkInit(void) {
 			, &vkqueue
 			);
 
-        assert(vkres == VK_SUCCESS && "vkCreateDevice has failed.");
-        assert(vkdev && "vkdev is not initialised");
+	assert(vkres == VK_SUCCESS && "vkCreateDevice has failed.");
+	assert(vkdev && "vkdev is not initialised");
 
-        vkGetPhysicalDeviceMemoryProperties(
-                        vkphydev
-                        , &vkphydevmemprops
-                        );
+	vkGetPhysicalDeviceMemoryProperties(
+			vkphydev
+			, &vkphydevmemprops
+			);
 
 	puts("Test_VkInit has done.");
 }
 
 static void Test_VkEnd(void) {
-        if(vkdev)	vkDestroyDevice(vkdev, 0);
-        if(vulkan)	vkDestroyInstance(vulkan, 0);
+	if(vkdev)	vkDestroyDevice(vkdev, 0);
+	if(vulkan)	vkDestroyInstance(vulkan, 0);
 }

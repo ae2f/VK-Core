@@ -1,10 +1,9 @@
-
-#include <stdlib.h>
-#include <stdio.h>
+#include "../vk.h"
 int main(void) {
-#if 0
-	void* p = malloc(123);
-	printf("%p", p);
+#if 1
+	(void)Test_VkInit();
 #endif
 	return 0;
+
+	Test_VkEnd();
 }
