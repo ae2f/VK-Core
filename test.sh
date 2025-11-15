@@ -31,14 +31,8 @@ cmake -S . -B $builddir \
     $_maker \
     || { echo "Configuration failed"; exit 1; }
 
-
-    # -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake \
-
-
-#-G "$generator Makefiles" 
-
 cmake --build $builddir --config $buildtype || { echo "Build failed"; exit 1; }
-ctest --test-dir $builddir -C $buildtype --output-on-failure || { echo "Test failed"; exit 1; }
+ctest -VV --test-dir $builddir -C $buildtype --output-on-failure || { echo "Test failed"; exit 1; }
 rm -rf $builddir
 
 

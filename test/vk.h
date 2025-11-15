@@ -82,6 +82,7 @@ static void Test_VkInit(void) {
 	vkres = vkCreateInstance(&vulkancreat, 0, &vulkan);
 	printf("vkCreateInstance result: %d\n", vkres);
 	assert(vkres == VK_SUCCESS && "vkCreateInstance has failed");
+	assert(vulkan);
 
 	vkphydevcount = 0;
 
@@ -93,6 +94,7 @@ static void Test_VkInit(void) {
 
 	assert(vkres == VK_SUCCESS);
 	assert(vkphydevcount && "vkphydevcount must be greater than 0.");
+
 	printf("Number of Physical Device available: %u\n", vkphydevcount);
 
 	vkphydevcount = 1;
