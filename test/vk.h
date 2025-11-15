@@ -57,7 +57,9 @@ static uint32_t find_queue_family(VkPhysicalDevice phydev) {
 
 static void Test_VkInit(void) {
 	uint32_t queueFamilyIndex;
-	float queuePriority = 1.0f;
+	float queuePriority;
+
+	VkDeviceQueueCreateInfo queueCreateInfo;
 
 	vkdev = 0;
 	vulkan = 0;
@@ -109,13 +111,12 @@ static void Test_VkInit(void) {
 
 	vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
-	// Find a queue family
+	/** Find a queue family */
 	queueFamilyIndex = find_queue_family(vkphydev);
 	assert(queueFamilyIndex != UINT32_MAX && "No suitable queue family found");
 
-	// Initialize VkDeviceQueueCreateInfo
+	/* Initialize VkDeviceQueueCreateInfo */
 	queuePriority = 1.0f;
-	VkDeviceQueueCreateInfo queueCreateInfo;
 	memset(&queueCreateInfo, 0, sizeof(queueCreateInfo));
 
 	queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -123,7 +124,7 @@ static void Test_VkInit(void) {
 	queueCreateInfo.queueCount = 1;
 	queueCreateInfo.pQueuePriorities = &queuePriority;
 
-	// Initialize VkDeviceCreateInfo
+	/* Initialize VkDeviceCreateInfo */
 	vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	vkdevcreat.queueCreateInfoCount = 1;
 	vkdevcreat.pQueueCreateInfos = &queueCreateInfo;
