@@ -108,7 +108,8 @@ static void Test_VkInit(void) {
 	s_vkapp.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	s_vkapp.pEngineName = "ae2f_vktest_engine";
 	s_vkcreat.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	s_vkcreat.ppEnabledExtensionNames = extnames.m_pch;
+	s_vkcreat.enabledExtensionCount = 0; /** extnames.m_pch; */
+	s_vkcreat.ppEnabledExtensionNames = NULL; /** extnames.m_pch; */
 	s_vkcreat.ppEnabledLayerNames = 0;
 	s_vkcreat.flags = 0;
 	s_vkcreat.pApplicationInfo = &s_vkapp;
@@ -160,8 +161,8 @@ static void Test_VkInit(void) {
 	s_vkdevcreat.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	s_vkdevcreat.queueCreateInfoCount = 1;
 	s_vkdevcreat.pQueueCreateInfos = &queueCreateInfo;
-	s_vkdevcreat.enabledExtensionCount = s_vkcreat.enabledExtensionCount;
-	s_vkdevcreat.ppEnabledExtensionNames = s_vkcreat.ppEnabledExtensionNames;
+	s_vkdevcreat.enabledExtensionCount = 0;
+	s_vkdevcreat.ppEnabledExtensionNames = NULL;
 	s_vkdevcreat.enabledLayerCount = 0;
 	s_vkdevcreat.ppEnabledLayerNames = NULL;
 	s_vkdevcreat.flags = 0;
