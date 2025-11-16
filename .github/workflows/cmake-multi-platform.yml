@@ -64,6 +64,7 @@ jobs:
       uses: jakoch/install-vulkan-sdk-action@v1.2.8
 
     - name: julia-lavapipe
+      if: (matrix.os == 'ubuntu-24.04-arm' || matrix.os == 'ubuntu-latest')
       # You may pin to the exact commit or the version.
       # uses: serenity4/julia-lavapipe@7766048527a633aad07558592b713622e04b4f60
       uses: serenity4/julia-lavapipe@v1
