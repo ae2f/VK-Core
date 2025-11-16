@@ -83,6 +83,18 @@ static void Test_VkInit(void) {
 	extnames.m_vkextprops_send = exts.m_vkextprops + s_vkcreat.enabledExtensionCount;
 	vkEnumerateInstanceExtensionProperties(NULL, &s_vkcreat.enabledExtensionCount, exts.m_vkextprops);
 
+	{
+		uint32_t i = s_vkcreat.enabledExtensionCount;
+
+		while(i--) {
+			puts(exts.m_vkextprops[i].extensionName);
+			extnames.m_pch[i]
+				= exts.m_vkextprops[i].extensionName;
+		}
+	}
+
+
+
 	s_vkdev = VK_NULL_HANDLE;
 	s_vulkan = 0;
 	s_vkphydevcount = 0;
@@ -95,17 +107,6 @@ static void Test_VkInit(void) {
 	s_vkapp.pNext = NULL;
 	s_vkapp.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	s_vkapp.pEngineName = "ae2f_vktest_engine";
-
-	{
-		uint32_t i = s_vkcreat.enabledExtensionCount;
-
-		while(i--) {
-			puts(exts.m_vkextprops[i].extensionName);
-			extnames.m_pch[i]
-				= exts.m_vkextprops[i].extensionName;
-		}
-	}
-
 	s_vkcreat.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	s_vkcreat.enabledLayerCount = 0;
 	s_vkcreat.ppEnabledExtensionNames = extnames.m_pch;
@@ -117,7 +118,6 @@ static void Test_VkInit(void) {
 	printf("vkCreateInstance result: %d\n", s_vkres);
 	assert(vkres == VK_SUCCESS && "vkCreateInstance has failed");
 	assert(s_vulkan);
-
 
 	s_vkres = vkEnumeratePhysicalDevices(
 			s_vulkan
