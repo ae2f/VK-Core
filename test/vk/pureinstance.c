@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
+int main(void) {
 	uint32_t device_count = 0;
 	uint32_t i = 0;
 
@@ -47,7 +47,7 @@ int main() {
 
 	printf("Found %u physical device(s).\n", device_count);
 
-	VkPhysicalDevice* devices = malloc(device_count * sizeof(VkPhysicalDevice));
+	VkPhysicalDevice* devices = malloc((size_t)(device_count * sizeof(VkPhysicalDevice)));
 	vkEnumeratePhysicalDevices(instance, &device_count, devices);
 
 	for (i = 0; i < device_count; ++i) {
