@@ -8,54 +8,57 @@
 #include <stdlib.h>
 
 int main() {
-    VkApplicationInfo app_info = {
-        .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-        .pApplicationName = "HeadlessTest",
-        .applicationVersion = VK_MAKE_API_VERSION(0, 1, 0, 0),
-        .pEngineName = "NoEngine",
-        .engineVersion = VK_MAKE_API_VERSION(0, 1, 0, 0),
-        .apiVersion = VK_API_VERSION_1_3
-    };
+	uint32_t device_count = 0;
+	uint32_t i = 0;
 
-    VkInstanceCreateInfo create_info = {
-        .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-        .pApplicationInfo = &app_info,
-        .enabledLayerCount = 0,
-        .ppEnabledLayerNames = NULL,
-        .enabledExtensionCount = 0,
-        .ppEnabledExtensionNames = NULL
-    };
 
-    VkInstance instance;
-    VkResult res = vkCreateInstance(&create_info, NULL, &instance);
-    if (res != VK_SUCCESS) {
-        fprintf(stderr, "Failed to create instance: %d\n", res);
-        return EXIT_FAILURE;
-    }
-    printf("Vulkan instance created (headless OK).\n");
+	VkApplicationInfo app_info = {
+		.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+		.pApplicationName = "HeadlessTest",
+		.applicationVersion = VK_MAKE_API_VERSION(0, 1, 0, 0),
+		.pEngineName = "NoEngine",
+		.engineVersion = VK_MAKE_API_VERSION(0, 1, 0, 0),
+		.apiVersion = VK_API_VERSION_1_3
+	};
 
-    uint32_t device_count = 0;
-    vkEnumeratePhysicalDevices(instance, &device_count, NULL);
-    if (device_count == 0) {
-        fprintf(stderr, "No physical devices found.\n");
-        vkDestroyInstance(instance, NULL);
-        return EXIT_FAILURE;
-    }
+	VkInstanceCreateInfo create_info = {
+		.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+		.pApplicationInfo = &app_info,
+		.enabledLayerCount = 0,
+		.ppEnabledLayerNames = NULL,
+		.enabledExtensionCount = 0,
+		.ppEnabledExtensionNames = NULL
+	};
 
-    printf("Found %u physical device(s).\n", device_count);
+	VkInstance instance;
+	VkResult res = vkCreateInstance(&create_info, NULL, &instance);
+	if (res != VK_SUCCESS) {
+		fprintf(stderr, "Failed to create instance: %d\n", res);
+		return EXIT_FAILURE;
+	}
+	printf("Vulkan instance created (headless OK).\n");
 
-    VkPhysicalDevice* devices = malloc(device_count * sizeof(VkPhysicalDevice));
-    vkEnumeratePhysicalDevices(instance, &device_count, devices);
+	vkEnumeratePhysicalDevices(instance, &device_count, NULL);
+	if (device_count == 0) {
+		fprintf(stderr, "No physical devices found.\n");
+		vkDestroyInstance(instance, NULL);
+		return EXIT_FAILURE;
+	}
 
-    for (uint32_t i = 0; i < device_count; ++i) {
-        VkPhysicalDeviceProperties props;
-        vkGetPhysicalDeviceProperties(devices[i], &props);
-        printf("  [%u] %s\n", i, props.deviceName);
-    }
-    free(devices);
+	printf("Found %u physical device(s).\n", device_count);
 
-    vkDestroyInstance(instance, NULL);
-    printf("Instance destroyed.\n");
+	VkPhysicalDevice* devices = malloc(device_count * sizeof(VkPhysicalDevice));
+	vkEnumeratePhysicalDevices(instance, &device_count, devices);
 
-    return EXIT_SUCCESS;
+	for (i = 0; i < device_count; ++i) {
+		VkPhysicalDeviceProperties props;
+		vkGetPhysicalDeviceProperties(devices[i], &props);
+		printf("  [%u] %s\n", i, props.deviceName);
+	}
+	free(devices);
+
+	vkDestroyInstance(instance, NULL);
+	printf("Instance destroyed.\n");
+
+	return EXIT_SUCCESS;
 }
