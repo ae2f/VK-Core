@@ -1,13 +1,13 @@
-#if 1
-#include "../vk.h"
+#define SWTCH	1
 
+#if SWTCH
+#include "../vk.h"
+#endif
 
 int main(void) {
+#if SWTCH
 	(void)Test_VkInit();
 	(void)Test_VkEnd();
-#else
-	int main(void) {
-
-		return 0;
 #endif
-	}
+	return 0;
+}
