@@ -12,7 +12,7 @@ Vulkan SDK with [glslang | clspv]
 > This is the flaw of this repository, not yours in high possibility.  
 
 # Test
-[![ae2f-workflow](https://github.com/ae2f/VK-Core/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ae2f/VK-Core/actions/workflows/cmake-multi-platform.yml)
+Build & Run (Ubuntu only): [![ae2f-workflow](https://github.com/ae2f/VK-Core/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main)](https://github.com/ae2f/VK-Core/actions/workflows/cmake-multi-platform.yml)
 > Other Operating systems than Ubuntu are expected to run this library, 
 > but will not be tested by github actions due to the lack of support of installation of Vulkan Driver.
 
