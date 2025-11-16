@@ -1,4 +1,5 @@
 # ae2fVK::Core
+
 > Rel-v5.15.22
 
 > This project has been migrated to [codeberg.org](https://codeberg.org/ae2f/VK-Core).  
@@ -8,7 +9,12 @@ Vulkan SDK with [glslang | clspv]
 
 # Warning
 > Setting glslang and clspv on alltogether would cause configuration step failure.  
-> This is the flaw of this repository, not yours in high possibility.
+> This is the flaw of this repository, not yours in high possibility.  
+
+# Test
+[![ae2f-workflow](https://github.com/ae2f/VK-Core/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ae2f/VK-Core/actions/workflows/cmake-multi-platform.yml)
+> Other Operating systems than Ubuntu are expected to run this library, 
+> but will not be tested by github actions due to the lack of support of installation of Vulkan Driver.
 
 # Dependency
 > These are necessary, or you will not able to build it.
@@ -18,6 +24,7 @@ Vulkan SDK with [glslang | clspv]
 - clang
 - cmake
 - Vulkan SDK
+- Vulkan Driver
 
 # Optional dependency
 > This will be automatically fetched when not found.  
