@@ -58,7 +58,8 @@ jobs:
       if: matrix.c == '-DCMAKE_C_COMPILER=clang' && matrix.os == 'windows-11-arm' || matrix.os == 'windows-latest'
       uses: egor-tensin/setup-clang@v1
 
-
+    - name: julia-lavapipe
+      uses: serenity4/julia-lavapipe@v1
 
     - name: Install Vulkan SDK
       uses: jakoch/install-vulkan-sdk-action@v1.2.5
