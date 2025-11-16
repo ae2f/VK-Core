@@ -1,4 +1,4 @@
-#define SWTCH	1
+#define SWTCH	0
 
 #if SWTCH
 #include "../vk.h"
