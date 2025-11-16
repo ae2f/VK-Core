@@ -50,5 +50,5 @@ jobs:
       uses: serenity4/julia-lavapipe@v1
         
     - name: Test
-      run: sh ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }} 
+      run: bash ./test.sh ${{ matrix.c }} ${{ matrix.cc }} ${{ matrix.conf }} 
         
