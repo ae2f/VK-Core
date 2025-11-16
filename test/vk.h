@@ -62,19 +62,31 @@ static void Test_VkInit(void) {
 	uint32_t queueFamilyIndex;
 	float queuePriority;
 	VkDeviceQueueCreateInfo queueCreateInfo;
-	const char* instanceExtensions[] = {
-		"VK_KHR_surface",
-		"VK_EXT_headless_surface"
-	};
+
+	union {
+		VkExtensionProperties*	m_vkextprops;
+		void*			m_v;
+	} exts;
+
+	union {
+		VkExtensionProperties* m_vkextprops_send;
+		const char**			m_pch;
+	} extnames;
+
+	memset(&s_vkphydevmemprops, 0, sizeof(s_vkphydevmemprops));
+	memset(&s_vkdevcreat, 0, sizeof(s_vkdevcreat));
+	memset(&s_vkcreat, 0, sizeof(s_vkcreat));
+
+	vkEnumerateInstanceExtensionProperties(NULL, &s_vkcreat.enabledExtensionCount, NULL);
+	printf("enabledextcount: %u\n", s_vkcreat.enabledExtensionCount);
+	exts.m_v = malloc((size_t)(s_vkcreat.enabledExtensionCount * (sizeof(VkExtensionProperties) + sizeof(void*))));
+	extnames.m_vkextprops_send = exts.m_vkextprops + s_vkcreat.enabledExtensionCount;
+	vkEnumerateInstanceExtensionProperties(NULL, &s_vkcreat.enabledExtensionCount, exts.m_vkextprops);
 
 	s_vkdev = VK_NULL_HANDLE;
 	s_vulkan = 0;
 	s_vkphydevcount = 0;
 	sp_vkphydev = NULL;
-
-	memset(&s_vkphydevmemprops, 0, sizeof(s_vkphydevmemprops));
-	memset(&s_vkdevcreat, 0, sizeof(s_vkdevcreat));
-	memset(&s_vkcreat, 0, sizeof(s_vkcreat));
 
 	s_vkapp.apiVersion = VK_MAKE_VERSION(1, 0, 0);
 	s_vkapp.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
@@ -84,10 +96,19 @@ static void Test_VkInit(void) {
 	s_vkapp.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	s_vkapp.pEngineName = "ae2f_vktest_engine";
 
+	{
+		uint32_t i = s_vkcreat.enabledExtensionCount;
+
+		while(i--) {
+			puts(exts.m_vkextprops[i].extensionName);
+			extnames.m_pch[i]
+				= exts.m_vkextprops[i].extensionName;
+		}
+	}
+
 	s_vkcreat.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	s_vkcreat.enabledExtensionCount = sizeof(instanceExtensions) / sizeof(instanceExtensions[0]);
 	s_vkcreat.enabledLayerCount = 0;
-	s_vkcreat.ppEnabledExtensionNames = instanceExtensions;
+	s_vkcreat.ppEnabledExtensionNames = extnames.m_pch;
 	s_vkcreat.ppEnabledLayerNames = 0;
 	s_vkcreat.flags = 0;
 	s_vkcreat.pApplicationInfo = &s_vkapp;
@@ -169,6 +190,7 @@ static void Test_VkInit(void) {
 			);
 
 	puts("Test_VkInit has done.");
+	free(exts.m_v);
 }
 
 static void Test_VkEnd(void) {
