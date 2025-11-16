@@ -14,11 +14,7 @@ jobs:
         c:  [-DCMAKE_C_COMPILER=gcc, -DCMAKE_C_COMPILER=clang, \"\"]
         conf: [Release, Debug]
 
-        include:
-          - os: ubuntu-latest
-
-          - os: windows-latest
-            
+        include: 
           - c: -DCMAKE_C_COMPILER=clang
             cc: -DCMAKE_CXX_COMPILER=clang++
             
